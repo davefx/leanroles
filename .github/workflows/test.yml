@@ -1,0 +1,77 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: WP ${{ matrix.wordpress }} / PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # The declared floor, the last release before the autoload column
+        # changed from yes/no to a vocabulary, and latest. Running only against
+        # the newest hides everything that depends on an API added since — which
+        # is how the batch cache flush was found to be broken on every release
+        # before 6.1.
+        wordpress: ['5.9', '6.5', 'latest']
+        php: ['7.4', '8.3']
+
+    services:
+      mysql:
+        image: mariadb:11
+        env:
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 1
+          MARIADB_DATABASE: wordpress_test
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s --health-timeout=5s --health-retries=5
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mysqli
+          coverage: none
+          tools: composer
+
+      - name: Cache composer downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/composer/files
+          key: composer-${{ matrix.php }}-${{ hashFiles('composer.json') }}
+          restore-keys: composer-${{ matrix.php }}-
+
+      - run: composer install --no-interaction --no-progress
+
+      - name: Install WordPress ${{ matrix.wordpress }}
+        run: tests/bin/install.sh wordpress_test root '' 127.0.0.1:3306 ${{ matrix.wordpress }}
+
+      # Both suites run here: the plugin's own, and the bundled library's, so a
+      # subtree update that breaks the copy this plugin ships cannot land quietly.
+      - run: composer test
+      - run: composer test:multisite
+
+  lint:
+    name: standards and PHP 7.4 compatibility
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          # The ruleset checks compatibility down to 7.4 regardless of the
+          # version it runs on, so the newest is fine here.
+          php-version: '8.3'
+          coverage: none
+          tools: composer
+
+      - run: composer install --no-interaction --no-progress
+      - run: composer lint
