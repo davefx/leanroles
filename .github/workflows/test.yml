@@ -94,7 +94,13 @@ jobs:
         id: build
         run: echo "archive=$(./bin/build-zip.sh | head -1)" >> "$GITHUB_OUTPUT"
 
+      # Create-or-upload: pushing a tag does not necessarily create a release
+      # first, and `gh release upload` needs one to exist.
       - name: Attach to the release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload "${GITHUB_REF_NAME}" "${{ steps.build.outputs.archive }}" --clobber
+        run: |
+          if ! gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+            gh release create "${GITHUB_REF_NAME}" --title "${GITHUB_REF_NAME}" --generate-notes
+          fi
+          gh release upload "${GITHUB_REF_NAME}" "${{ steps.build.outputs.archive }}" --clobber
