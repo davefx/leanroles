@@ -1,0 +1,47 @@
+{
+    "name": "davefx/user-tags",
+    "description": "A WordPress user tag: behaves like a role to the whole of WordPress, grants nothing, and never touches the autoloaded role option.",
+    "type": "library",
+    "license": "GPL-2.0-or-later",
+    "keywords": [
+        "wordpress",
+        "users",
+        "roles",
+        "capabilities",
+        "segmentation",
+        "performance"
+    ],
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6",
+        "yoast/phpunit-polyfills": "^2.0 || ^3.0",
+        "squizlabs/php_codesniffer": "^3.10",
+        "wp-coding-standards/wpcs": "^3.1",
+        "phpcompatibility/phpcompatibility-wp": "^2.1",
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0"
+    },
+    "autoload": {
+        "files": []
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test:multisite": "WP_MULTISITE=1 phpunit",
+        "lint": "phpcs",
+        "install-tests": "tests/bin/install.sh"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "extra": {
+        "note": "The autoload block is deliberately empty. Bundling plugins require user-tags.php; letting composer autoload src/ would map class names to a copy the version registry did not choose. See readme.md."
+    },
+    "homepage": "https://github.com/davefx/user-tags",
+    "support": {
+        "issues": "https://github.com/davefx/user-tags/issues",
+        "source": "https://github.com/davefx/user-tags"
+    }
+}
