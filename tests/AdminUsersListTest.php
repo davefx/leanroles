@@ -14,6 +14,16 @@ use UserTags\Tests\TestCase;
 
 class AdminUsersListTest extends TestCase {
 
+	public function test_the_screen_slug_is_not_the_text_domain(): void {
+		// They are different things that happen to be nearly the same word. A
+		// blanket rename of the domain once swallowed the slug, and the only
+		// symptom was a menu link pointing somewhere nobody expected.
+		$this->assertSame( 'user-tags', \UserTags\Admin\Menu::SLUG );
+		$this->assertStringContainsString( 'page=user-tags&', \UserTags\Admin\Menu::url( array( 'x' => 1 ) ) . '&' );
+		$this->assertStringContainsString( 'users.php', \UserTags\Admin\Menu::url() );
+	}
+
+
 	private $user_id;
 
 	public function set_up(): void {
