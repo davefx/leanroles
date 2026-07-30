@@ -12,7 +12,6 @@ defined( 'ABSPATH' ) || exit;
 final class Menu {
 
 	public const AUDIT_SLUG = 'leanroles';
-	public const TAGS_SLUG  = 'leanroles-tags';
 
 	/**
 	 * Hook suffixes of our own screens.
@@ -52,27 +51,18 @@ final class Menu {
 			array( AuditPage::class, 'render' )
 		);
 
-		$tags = add_submenu_page(
-			self::AUDIT_SLUG,
-			__( 'User tags', 'leanroles' ),
-			__( 'Tags', 'leanroles' ),
-			'promote_users',
-			self::TAGS_SLUG,
-			array( TagsPage::class, 'render' )
-		);
-
-		self::$screens = array_filter( array( $audit, $tags ) );
-
-		add_action( 'load-' . $tags, array( TagsPage::class, 'handle_actions' ) );
+		self::$screens = array_filter( array( $audit ) );
 	}
 
 	/**
-	 * Load the stylesheet on our screens and on the users list.
+	 * Load the stylesheet on the audit screen.
+	 *
+	 * The tag screens bring their own; they belong to the bundled library now.
 	 *
 	 * @param string $hook Current admin page hook.
 	 */
 	public static function enqueue( string $hook ): void {
-		if ( ! in_array( $hook, self::$screens, true ) && 'users.php' !== $hook && 'user-edit.php' !== $hook && 'profile.php' !== $hook ) {
+		if ( ! in_array( $hook, self::$screens, true ) ) {
 			return;
 		}
 

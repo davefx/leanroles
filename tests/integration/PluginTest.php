@@ -190,7 +190,6 @@ class PluginTest extends TestCase {
 		$sub_slugs = wp_list_pluck( $submenu[ Menu::AUDIT_SLUG ], 2 );
 
 		$this->assertContains( Menu::AUDIT_SLUG, $sub_slugs );
-		$this->assertContains( Menu::TAGS_SLUG, $sub_slugs );
 	}
 
 	public function test_the_audit_screen_needs_only_list_users(): void {
@@ -212,11 +211,14 @@ class PluginTest extends TestCase {
 		}
 
 		$this->assertSame( 'list_users', $caps[ Menu::AUDIT_SLUG ] );
-		$this->assertSame( 'promote_users', $caps[ Menu::TAGS_SLUG ] );
 	}
 
-	public function test_the_stylesheet_loads_on_the_users_screen(): void {
-		Menu::enqueue( 'users.php' );
+	public function test_the_stylesheet_loads_on_the_audit_screen(): void {
+		// The users list and the profile are the library's screens now, and they
+		// bring their own stylesheet.
+		$this->reset_static( Menu::class, 'screens', array( 'toplevel_page_leanroles' ) );
+
+		Menu::enqueue( 'toplevel_page_leanroles' );
 
 		$this->assertTrue( wp_style_is( 'leanroles-admin', 'enqueued' ) );
 

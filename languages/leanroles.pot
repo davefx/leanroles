@@ -1,0 +1,416 @@
+# Copyright (C) 2026 LeanRoles
+# This file is distributed under the GPL-3.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: LeanRoles 0.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/leanroles\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-07-30T04:50:30+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: leanroles\n"
+
+#. Plugin Name of the plugin
+#. Author of the plugin
+#: leanroles.php
+#: src/Admin/Menu.php:36
+#: src/Admin/Menu.php:37
+msgid "LeanRoles"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: leanroles.php
+msgid "https://example.com/leanroles"
+msgstr ""
+
+#. Description of the plugin
+#: leanroles.php
+msgid "Measures what your role configuration costs on every request, and adds user tags — a zero-capability primitive that behaves like a role without weighing like one."
+msgstr ""
+
+#. translators: %s: current PHP version.
+#: leanroles.php:55
+#, php-format
+msgid "LeanRoles requires PHP 7.4 or newer. This site runs PHP %s, so the plugin has not been loaded."
+msgstr ""
+
+#: src/Admin/AuditPage.php:22
+msgid "You do not have permission to view the role audit."
+msgstr ""
+
+#: src/Admin/AuditPage.php:44
+#: src/Admin/Menu.php:47
+msgid "Role audit"
+msgstr ""
+
+#: src/Admin/AuditPage.php:47
+msgid "Everything on this page is read. Nothing here writes to your role configuration, your users, or anything else — you can leave this installed on a client site without asking anyone first."
+msgstr ""
+
+#: src/Admin/AuditPage.php:71
+msgid "Role option"
+msgstr ""
+
+#: src/Admin/AuditPage.php:74
+msgid "measured with LENGTH() in the database"
+msgstr ""
+
+#. translators: %s: percentage.
+#: src/Admin/AuditPage.php:77
+#, php-format
+msgid "%s of everything autoloaded"
+msgstr ""
+
+#: src/Admin/AuditPage.php:82
+#: src/Admin/AuditPage.php:351
+msgid "Roles"
+msgstr ""
+
+#. translators: 1: capability entries, 2: distinct capabilities.
+#: src/Admin/AuditPage.php:86
+#, php-format
+msgid "%1$s capability entries, %2$s distinct"
+msgstr ""
+
+#: src/Admin/AuditPage.php:92
+msgid "Autoloaded total"
+msgstr ""
+
+#. translators: %s: number of options.
+#: src/Admin/AuditPage.php:96
+#, php-format
+msgid "across %s options, on every request"
+msgstr ""
+
+#: src/Admin/AuditPage.php:121
+msgid "Findings"
+msgstr ""
+
+#: src/Admin/AuditPage.php:124
+msgid "Nothing here is worth your attention. That is a genuine result, not a placeholder."
+msgstr ""
+
+#. translators: %s: number of remaining items.
+#: src/Admin/AuditPage.php:155
+#, php-format
+msgid "… and %s more."
+msgstr ""
+
+#: src/Admin/AuditPage.php:174
+msgid "Measured cost"
+msgstr ""
+
+#: src/Admin/AuditPage.php:177
+msgid "The benchmark is switched off. Switch it back on below to time an unserialize() of your own option on this machine."
+msgstr ""
+
+#: src/Admin/AuditPage.php:182
+msgid "Nothing to measure."
+msgstr ""
+
+#: src/Admin/AuditPage.php:190
+msgid "Unserialization, per request"
+msgstr ""
+
+#. translators: %s: iteration count.
+#: src/Admin/AuditPage.php:194
+#, php-format
+msgid "mean of %s timed calls after a warm-up pass"
+msgstr ""
+
+#: src/Admin/AuditPage.php:199
+msgid "Resident memory, per worker"
+msgstr ""
+
+#: src/Admin/AuditPage.php:201
+msgid "memory_get_usage() either side of the call, with the result kept alive"
+msgstr ""
+
+#: src/Admin/AuditPage.php:204
+msgid "In memory versus on disk"
+msgstr ""
+
+#: src/Admin/AuditPage.php:206
+msgid "every hashtable entry costs far more resident than its serialized bytes"
+msgstr ""
+
+#: src/Admin/AuditPage.php:209
+msgid "Hashtable entries"
+msgstr ""
+
+#: src/Admin/AuditPage.php:211
+msgid "unserialize() scales with this, not with the byte count"
+msgstr ""
+
+#: src/Admin/AuditPage.php:219
+msgid "Concurrent workers"
+msgstr ""
+
+#. translators: 1: server RAM in MB, 2: worker size in MB.
+#: src/Admin/AuditPage.php:223
+#, php-format
+msgid "estimate at %1$s MB of pool RAM and %2$s MB per worker — adjust both below"
+msgstr ""
+
+#: src/Admin/AuditPage.php:233
+msgid "Object cache bandwidth"
+msgstr ""
+
+#. translators: 1: requests per second, 2: gigabytes per day.
+#: src/Admin/AuditPage.php:237
+#, php-format
+msgid "alloptions lives under one key, so the whole blob crosses the wire per request — %1$s req/s, %2$s GB/day"
+msgstr ""
+
+#: src/Admin/AuditPage.php:256
+msgid "The unserialization and memory figures are measurements taken on this machine, on this PHP build, against your own option. The worker and bandwidth figures are arithmetic on top of them and are only as good as the two inputs you give them."
+msgstr ""
+
+#: src/Admin/AuditPage.php:274
+msgid "Requests per second"
+msgstr ""
+
+#: src/Admin/AuditPage.php:280
+msgid "Pool RAM (MB)"
+msgstr ""
+
+#: src/Admin/AuditPage.php:286
+msgid "Per worker (MB)"
+msgstr ""
+
+#: src/Admin/AuditPage.php:293
+msgid "Run the benchmark"
+msgstr ""
+
+#: src/Admin/AuditPage.php:296
+msgid "Recalculate"
+msgstr ""
+
+#: src/Admin/AuditPage.php:309
+msgid "Stack"
+msgstr ""
+
+#: src/Admin/AuditPage.php:314
+msgid "Persistent object cache"
+msgstr ""
+
+#: src/Admin/AuditPage.php:317
+msgid "drop-in present, backend not identified"
+msgstr ""
+
+#: src/Admin/AuditPage.php:318
+msgid "none"
+msgstr ""
+
+#: src/Admin/AuditPage.php:325
+msgid "Drop-in appears to use"
+msgstr ""
+
+#: src/Admin/AuditPage.php:353
+msgid "Role"
+msgstr ""
+
+#: src/Admin/AuditPage.php:354
+msgid "Granted"
+msgstr ""
+
+#: src/Admin/AuditPage.php:355
+msgid "Denied"
+msgstr ""
+
+#: src/Admin/AuditPage.php:356
+msgid "level_N"
+msgstr ""
+
+#: src/Admin/AuditPage.php:357
+msgid "Effective"
+msgstr ""
+
+#: src/Admin/AuditPage.php:358
+msgid "Users"
+msgstr ""
+
+#: src/Admin/AuditPage.php:366
+msgid "grants nothing"
+msgstr ""
+
+#. translators: %s: human-readable time difference.
+#: src/Admin/AuditPage.php:386
+#, php-format
+msgid "User counts come from count_users() and are cached for twelve hours. Last counted %s ago."
+msgstr ""
+
+#. translators: %s: number of pairs.
+#: src/Admin/AuditPage.php:399
+#, php-format
+msgid "%s pairs of roles stand in a subset relationship: one role's capabilities are entirely contained in another's. Those are the candidates for inheritance."
+msgstr ""
+
+#. translators: %s: number of roles.
+#: src/Admin/AuditPage.php:412
+#, php-format
+msgid "Clone and subset detection compares every role against every other, which is quadratic. With %s roles it was skipped rather than run inside a page load; the WP-CLI command will do it."
+msgstr ""
+
+#: src/Admin/Menu.php:48
+msgid "Audit"
+msgstr ""
+
+#: src/Api/functions.php:101
+#: src/Api/functions.php:118
+msgid "The User Tags library is not available."
+msgstr ""
+
+#: src/Audit/Auditor.php:101
+msgid "No role option was found for this site."
+msgstr ""
+
+#: src/Audit/Auditor.php:102
+msgid "Either the site has never stored one, or it is being supplied by code on the wp_roles_init hook. There is nothing here to audit."
+msgstr ""
+
+#. translators: %s: number of capability entries.
+#: src/Audit/Auditor.php:114
+#, php-format
+msgid "%s capability entries are deprecated user levels."
+msgstr ""
+
+#: src/Audit/Auditor.php:117
+msgid "level_0 through level_10 were deprecated in WordPress 3.0. Core keeps reading them for backwards compatibility, so removing them is not free of risk, but on a site whose roles were cloned from Editor they are pure accounting weight — they are copied into every clone."
+msgstr ""
+
+#. translators: %s: number of roles.
+#: src/Audit/Auditor.php:127
+#, php-format
+msgid "%s role grants no effective permission."
+msgid_plural "%s roles grant no effective permission."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Auditor.php:130
+msgid "Their capabilities are contained in { read, level_0 … level_10 }, which every subscriber already has. They are labels wearing a role's clothes, and a user tag does the same job without the weight. Nothing here converts them for you; the three primitives that are here — create a tag, assign it in bulk, delete the role with reassignment — compose into the same result by hand."
+msgstr ""
+
+#. translators: %s: number of roles.
+#: src/Audit/Auditor.php:141
+#, php-format
+msgid "%s role has no users."
+msgid_plural "%s roles have no users."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Auditor.php:144
+msgid "A role with no users still costs its full weight on every request. Some are left behind by deactivated plugins; some are waiting for users who will arrive next season. The counts come from count_users() and are cached for twelve hours."
+msgstr ""
+
+#. translators: 1: number of groups, 2: number of duplicated entries.
+#: src/Audit/Auditor.php:161
+#, php-format
+msgid "%1$s groups of roles have identical capabilities, duplicating %2$s entries."
+msgstr ""
+
+#: src/Audit/Auditor.php:165
+msgid "Core has no inheritance, so every one of these carries its own full copy. They may all be legitimate — a role is a name as well as a permission set — but only one copy of the capabilities needs to exist."
+msgstr ""
+
+#. translators: 1: entries that could be removed, 2: total entries.
+#: src/Audit/Auditor.php:177
+#, php-format
+msgid "Inheritance could remove at least %1$s of %2$s capability entries."
+msgstr ""
+
+#: src/Audit/Auditor.php:181
+msgid "A conservative greedy estimate: each role is assumed to inherit from the largest role whose capabilities it fully contains. A better arrangement almost certainly exists. This is a lower bound and is stated as one."
+msgstr ""
+
+#. translators: %s: number of capabilities.
+#: src/Audit/Auditor.php:191
+#, php-format
+msgid "%s capability could not be traced to core, a post type or a taxonomy."
+msgid_plural "%s capabilities could not be traced to core, a post type or a taxonomy."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Auditor.php:194
+msgid "Unrecognised does not mean orphaned. Custom code and premium plugins check capabilities that no scanner can see from here, and anything registered conditionally will be missing from the comparison. This is a list of things to look into, and nothing more than that."
+msgstr ""
+
+#: src/Audit/Auditor.php:203
+msgid "Clone and subset analysis was skipped."
+msgstr ""
+
+#. translators: %s: number of roles.
+#: src/Audit/Auditor.php:206
+#, php-format
+msgid "Comparing every role against every other is quadratic, and this site has %s of them. Raise the leanroles_pairwise_limit filter to run it anyway, ideally from WP-CLI rather than inside a page load."
+msgstr ""
+
+#: src/Audit/Benchmark.php:50
+msgid "The role option does not exist on this site."
+msgstr ""
+
+#: src/Audit/StackProbe.php:91
+msgid "No object-cache.php drop-in is installed. The autoloaded options are read from MySQL on every request that is not served from a page cache."
+msgstr ""
+
+#: src/Audit/StackProbe.php:99
+msgid "A drop-in is installed but could not be read, so nothing is claimed about what it does."
+msgstr ""
+
+#: src/Audit/StackProbe.php:120
+msgid "This drop-in appears to already do something about the cost of large cached values. The findings below still describe real memory and unserialization work in PHP, which no cache backend removes — but the bandwidth projection may not apply to this stack."
+msgstr ""
+
+#: src/Audit/StackProbe.php:124
+msgid "Redis serves one command at a time. A single large GET for alloptions delays every other client waiting on the same connection, which is why the symptom usually shows up as unrelated timeouts."
+msgstr ""
+
+#: src/Audit/StackProbe.php:127
+msgid "Drop-in behaviour is inferred from markers in its source and may be wrong, particularly for commercial drop-ins that change between releases. Treat it as a starting point, not a verdict."
+msgstr ""
+
+#. translators: %s: number of bytes.
+#: src/Support/Format.php:27
+#, php-format
+msgid "%s byte"
+msgid_plural "%s bytes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Support/Roles.php:139
+msgid "There are no restore points to restore from."
+msgstr ""
+
+#: src/Support/Roles.php:156
+msgid "That restore point does not exist."
+msgstr ""
+
+#: src/Support/Roles.php:160
+msgid "That restore point holds no role option; refusing to restore it."
+msgstr ""
+
+#: src/Support/Roles.php:164
+msgid "The restore point failed its integrity check and has not been applied."
+msgstr ""
+
+#: src/Support/Roles.php:170
+msgid "The restore point did not unserialize to a role array."
+msgstr ""
+
+#: src/Support/Roles.php:195
+msgid "That role does not exist."
+msgstr ""
+
+#. translators: %s: role slug.
+#: src/Support/Roles.php:205
+#, php-format
+msgid "The role \"%s\" is protected and cannot be deleted."
+msgstr ""
+
+#: src/Support/Roles.php:212
+msgid "The reassignment target role does not exist."
+msgstr ""

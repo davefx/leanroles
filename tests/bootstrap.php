@@ -98,3 +98,9 @@ require_once __DIR__ . '/includes/CliTestCase.php';
 // The bundled library's own suite runs alongside the plugin's, so its base
 // class has to be available here too.
 require_once LEANROLES_PATH . 'libraries/user-tags/tests/includes/TestCase.php';
+
+// is_admin() is false under WP-CLI, so the library's optional screens are never
+// auto-loaded. Its tests instantiate them directly.
+foreach ( array( 'Menu', 'Badge', 'Screen', 'UsersList', 'Profile' ) as $leanroles_admin_class ) {
+	require_once LEANROLES_PATH . 'libraries/user-tags/src/Admin/' . $leanroles_admin_class . '.php';
+}

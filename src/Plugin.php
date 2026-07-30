@@ -8,8 +8,6 @@
 namespace LeanRoles;
 
 use LeanRoles\Admin\Menu;
-use LeanRoles\Admin\UserProfile;
-use LeanRoles\Admin\UsersList;
 use LeanRoles\Support\Roles;
 use UserTags\Library as UserTagsLibrary;
 
@@ -28,10 +26,15 @@ final class Plugin {
 		 */
 		add_action( 'init', array( __CLASS__, 'load_textdomain' ) );
 
+		/*
+		 * The tag screens belong to the bundled library and load only on
+		 * request. LeanRoles wants them, so it asks — at file-load time, which
+		 * is why this is a filter and not a method call.
+		 */
+		add_filter( 'user_tags_enable_admin', '__return_true' );
+
 		if ( is_admin() ) {
 			Menu::boot();
-			UsersList::boot();
-			UserProfile::boot();
 		}
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {

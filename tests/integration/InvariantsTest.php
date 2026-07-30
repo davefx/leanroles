@@ -11,14 +11,10 @@
 
 namespace LeanRoles\Tests\Integration;
 
-use LeanRoles\Admin\TagsPage;
-use LeanRoles\Admin\UserProfile;
-use LeanRoles\Admin\UsersList;
 use LeanRoles\Plugin;
 use LeanRoles\Support\Roles;
 use UserTags\Catalogue;
 use UserTags\Store;
-use UserTags\Taxonomy;
 use LeanRoles\Tests\TestCase;
 
 class InvariantsTest extends TestCase {
@@ -99,7 +95,7 @@ class InvariantsTest extends TestCase {
 		$autoloaded = $wpdb->get_col(
 			"SELECT option_name FROM {$wpdb->options}
 			 WHERE autoload IN ('yes','on','auto','auto-on')
-			   AND option_name LIKE '%leanroles%'"
+			   AND ( option_name LIKE '%leanroles%' OR option_name LIKE '%user_tags%' )"
 		);
 
 		$this->assertSame(
@@ -107,19 +103,6 @@ class InvariantsTest extends TestCase {
 			$autoloaded,
 			'Adding to autoload would be recreating the disease this plugin exists to treat.'
 		);
-	}
-
-	public function test_activation_adds_no_new_autoloaded_option(): void {
-		global $wpdb;
-
-		$before = $wpdb->get_col( "SELECT option_name FROM {$wpdb->options} WHERE autoload IN ('yes','on','auto','auto-on')" );
-
-		Plugin::activate();
-		$this->make_tag( 'gold' );
-
-		$after = $wpdb->get_col( "SELECT option_name FROM {$wpdb->options} WHERE autoload IN ('yes','on','auto','auto-on')" );
-
-		$this->assertSame( array(), array_diff( $after, $before ) );
 	}
 
 	public function test_the_backup_option_is_never_autoloaded(): void {
@@ -137,97 +120,17 @@ class InvariantsTest extends TestCase {
 		$this->assertNotContains( $autoload, array( 'yes', 'on', 'auto', 'auto-on' ) );
 	}
 
-	// ------------------------------------------------------------ escaping
-
-	/**
-	 * @dataProvider hostile_names
-	 */
-	public function test_a_hostile_tag_name_is_escaped_everywhere( string $name ): void {
+	public function test_activation_adds_no_new_autoloaded_option(): void {
 		global $wpdb;
 
-		$term_id = $this->make_tag( 'gold' );
+		$before = $wpdb->get_col( "SELECT option_name FROM {$wpdb->options} WHERE autoload IN ('yes','on','auto','auto-on')" );
 
-		// wp_insert_term() strips markup, so this goes in underneath it: the
-		// realistic case is a row that arrived by import, migration, or a
-		// direct edit, and the display layer must not depend on it being clean.
-		$wpdb->update( $wpdb->terms, array( 'name' => $name ), array( 'term_id' => $term_id ) );
-		$wpdb->update(
-			$wpdb->term_taxonomy,
-			array( 'description' => $name ),
-			array( 'term_id' => $term_id, 'taxonomy' => \UserTags\Taxonomy::NAME )
-		);
-		clean_term_cache( array( $term_id ), \UserTags\Taxonomy::NAME );
-		Catalogue::rebuild();
-		$this->reset_plugin_state();
+		Plugin::activate();
+		$this->make_tag( 'gold' );
 
-		$user_id = self::factory()->user->create();
-		Store::add( $user_id, 'gold' );
+		$after = $wpdb->get_col( "SELECT option_name FROM {$wpdb->options} WHERE autoload IN ('yes','on','auto','auto-on')" );
 
-		$admin_id = self::factory()->user->create( array( 'role' => 'administrator' ) );
-
-		if ( is_multisite() ) {
-			grant_super_admin( $admin_id );
-		}
-
-		wp_set_current_user( $admin_id );
-
-		$surfaces = array(
-			'users list column' => UsersList::render_column( '', 'leanroles_tags', $user_id ),
-			'users list views'  => implode( ' ', UsersList::add_views( array() ) ),
-			'tags screen'       => $this->capture_output( array( TagsPage::class, 'render' ) ),
-			'profile screen'    => $this->capture_output( fn() => UserProfile::render( get_userdata( $user_id ) ) ),
-			'bulk controls'     => $this->capture_output( static fn() => UsersList::render_controls( 'top' ) ),
-		);
-
-		foreach ( $surfaces as $where => $html ) {
-			$this->assertStringNotContainsString( '<script', $html, "Unescaped markup reached the {$where}." );
-
-			/*
-			 * The pair below is the whole test. Looking for fragments like
-			 * "onerror=" would fire on `&lt;img src=x onerror=alert(1)&gt;`,
-			 * which is inert text — escaped output legitimately still contains
-			 * the words. What matters is that the raw string never appears and
-			 * the escaped one does.
-			 */
-			$this->assertStringNotContainsString(
-				$name,
-				$html,
-				"The raw name reached the {$where} unescaped."
-			);
-			$this->assertStringContainsString(
-				esc_html( $name ),
-				$html,
-				"The name should still be shown, escaped, on the {$where}."
-			);
-		}
-
-		$this->clear_request();
-	}
-
-	public function hostile_names(): array {
-		return array(
-			'script tag'      => array( '<script>alert(1)</script>' ),
-			'image onerror'   => array( '<img src=x onerror=alert(1)>' ),
-			'attribute break' => array( '" onmouseover="alert(1)' ),
-			'entity soup'     => array( '<a href="javascript:alert(1)">click</a>' ),
-		);
-	}
-
-	public function test_a_hostile_colour_never_reaches_a_style_attribute(): void {
-		$term_id = $this->make_tag( 'gold' );
-
-		// Straight past the API, the way a bad import or a direct edit would.
-		update_term_meta( $term_id, Taxonomy::META_COLOR, 'red;background-image:url(javascript:alert(1))' );
-		Catalogue::rebuild();
-		$this->reset_plugin_state();
-
-		$user_id = self::factory()->user->create();
-		Store::add( $user_id, 'gold' );
-
-		$html = UsersList::render_column( '', 'leanroles_tags', $user_id );
-
-		$this->assertStringNotContainsString( 'javascript:', $html );
-		$this->assertStringNotContainsString( 'background-image', $html );
+		$this->assertSame( array(), array_diff( $after, $before ) );
 	}
 
 	// --------------------------------------------------------- text domain
@@ -238,7 +141,7 @@ class InvariantsTest extends TestCase {
 		foreach ( $this->shipped_files() as $file ) {
 			// The library must not borrow its host's domain: a plugin that
 			// adopts it ships no `leanroles` translations.
-			$expected = $this->is_library( $file ) ? "'user-tags'" : "'leanroles'";
+			$expected = $this->is_library( $file ) ? "'user-tags-lib'" : "'leanroles'";
 
 			foreach ( $this->i18n_calls( $file ) as $call ) {
 				if ( $expected !== $call['domain'] ) {
@@ -417,37 +320,6 @@ class InvariantsTest extends TestCase {
 
 	// ---------------------------------------------------------------- N + 1
 
-	public function test_the_users_column_costs_no_query_per_row(): void {
-		global $wpdb;
-
-		$this->make_tag( 'gold' );
-
-		$ids = self::factory()->user->create_many( 12 );
-
-		foreach ( $ids as $id ) {
-			Store::add( $id, 'gold' );
-		}
-
-		// What the list table does before it renders a single row.
-		foreach ( $ids as $id ) {
-			clean_user_cache( $id );
-		}
-
-		Store::flush_memo();
-		cache_users( $ids );
-
-		$before = $wpdb->num_queries;
-
-		foreach ( $ids as $id ) {
-			UsersList::render_column( '', 'leanroles_tags', $id );
-		}
-
-		$this->assertSame(
-			$before,
-			$wpdb->num_queries,
-			'The mirror exists so this column rides on the metadata cache the list table already primed.'
-		);
-	}
 
 	public function test_reading_tags_for_many_users_does_not_scale_with_the_count(): void {
 		global $wpdb;
@@ -535,9 +407,10 @@ class InvariantsTest extends TestCase {
 		$this->assertSame( array(), $found, implode( "\n", $found ) );
 	}
 
-	public function test_the_library_registers_no_admin_screens(): void {
+	public function test_the_library_plants_no_top_level_menu(): void {
 		// Action Scheduler adds a Tools screen to every site that bundles it.
-		// Screens belong to whichever plugin wants them.
+		// This library's screens are opt-in, and when they do appear they sit
+		// under Users — never as an entry of their own in somebody's sidebar.
 		$found = array();
 
 		foreach ( $this->shipped_files() as $file ) {
@@ -545,7 +418,7 @@ class InvariantsTest extends TestCase {
 				continue;
 			}
 
-			foreach ( array( 'add_menu_page', 'add_submenu_page', 'add_management_page', 'wp_enqueue_style', 'wp_enqueue_script' ) as $needle ) {
+			foreach ( array( 'add_menu_page', 'add_management_page', 'add_options_page' ) as $needle ) {
 				if ( false !== strpos( $this->code_only( $file ), $needle ) ) {
 					$found[] = str_replace( LEANROLES_PATH, '', $file ) . ' calls ' . $needle . '()';
 				}
@@ -553,6 +426,22 @@ class InvariantsTest extends TestCase {
 		}
 
 		$this->assertSame( array(), $found, implode( "\n", $found ) );
+	}
+
+	public function test_the_library_screens_are_behind_a_filter(): void {
+		$source = $this->code_only( LEANROLES_PATH . 'libraries/user-tags/src/Admin/Admin.php' );
+
+		$this->assertStringContainsString(
+			"apply_filters( 'user_tags_enable_admin'",
+			$source,
+			'Nothing may reach the admin menu of a site that did not ask for it.'
+		);
+
+		// And the screen files are not even read from disk before that check.
+		$before = strpos( $source, "user_tags_enable_admin" );
+		$after  = strpos( $source, "require_once" );
+
+		$this->assertLessThan( $after, $before, 'The gate has to come before the loading.' );
 	}
 
 	public function test_the_registry_stays_frozen(): void {

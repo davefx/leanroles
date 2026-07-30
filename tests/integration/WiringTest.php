@@ -66,21 +66,16 @@ class WiringTest extends CliTestCase {
 		}
 	}
 
-	public function test_admin_boot_is_wired(): void {
-		\LeanRoles\Admin\UsersList::boot();
-		\LeanRoles\Admin\UserProfile::boot();
 
-		$this->assertNotFalse( has_filter( 'manage_users_columns', array( \LeanRoles\Admin\UsersList::class, 'add_column' ) ) );
-		$this->assertNotFalse( has_filter( 'views_users', array( \LeanRoles\Admin\UsersList::class, 'add_views' ) ) );
-		$this->assertNotFalse( has_action( 'restrict_manage_users', array( \LeanRoles\Admin\UsersList::class, 'render_controls' ) ) );
-		$this->assertNotFalse( has_action( 'load-users.php', array( \LeanRoles\Admin\UsersList::class, 'handle_bulk' ) ) );
-		$this->assertNotFalse( has_action( 'show_user_profile', array( \LeanRoles\Admin\UserProfile::class, 'render' ) ) );
-		$this->assertNotFalse( has_action( 'edit_user_profile_update', array( \LeanRoles\Admin\UserProfile::class, 'save' ) ) );
-	}
-
-	public function test_plugin_boot_registers_the_taxonomy_and_the_prune_job(): void {
+	public function test_plugin_boot_asks_the_library_for_its_screens(): void {
 		Plugin::boot();
 
+		// The tag engine and its screens belong to the bundled library. What the
+		// plugin does is opt in — at file-load time, which is why it is a filter.
+		$this->assertTrue( apply_filters( 'user_tags_enable_admin', false ) );
+	}
+
+	public function test_the_library_registered_the_taxonomy_and_the_prune_job(): void {
 		$this->assertSame( 0, has_action( 'init', array( Taxonomy::class, 'register' ) ) );
 		$this->assertSame( 1, has_action( 'init', array( Catalogue::class, 'prime' ) ) );
 		$this->assertNotFalse( has_action( 'user_tags_prune_mirrors', array( Store::class, 'prune_mirrors' ) ) );
@@ -237,39 +232,5 @@ class WiringTest extends CliTestCase {
 		$this->assertStringContainsString( 'the restore point is empty', $result['stderr'] );
 	}
 
-	public function test_the_tags_screen_accepts_an_action_from_the_query_string(): void {
-		$this->make_tag( 'gold' );
 
-		$admin_id = self::factory()->user->create( array( 'role' => 'administrator' ) );
-
-		if ( is_multisite() ) {
-			grant_super_admin( $admin_id );
-		}
-
-		wp_set_current_user( $admin_id );
-
-		// A row action link, not a form post.
-		$_POST    = array();
-		$_GET     = array(
-			'leanroles_action' => 'delete',
-			'slug'             => 'gold',
-			'_wpnonce'         => wp_create_nonce( 'leanroles_tags' ),
-		);
-		$_REQUEST = $_GET;
-
-		$location = $this->capture_redirect( array( \LeanRoles\Admin\TagsPage::class, 'handle_actions' ) );
-
-		$this->assertStringContainsString( 'message=deleted', (string) $location );
-		$this->assertNull( Taxonomy::get_by_slug( 'gold' ) );
-
-		$this->clear_request();
-	}
-
-	public function test_a_badge_falls_back_to_white_text_on_a_broken_colour(): void {
-		// sanitize_hex_color() lets a three-digit value through, so the
-		// contrast helper has to cope with lengths other than six.
-		$html = \LeanRoles\Admin\TagsPage::badge( 'Gold', '#12' );
-
-		$this->assertStringContainsString( 'leanroles-badge', $html );
-	}
 }
