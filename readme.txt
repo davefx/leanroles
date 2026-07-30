@@ -45,6 +45,15 @@ for yourself.
 1. Upload the plugin to `wp-content/plugins/leanroles` and activate it.
 2. Open **LeanRoles → Audit**. Nothing on that screen writes anything.
 
+== Screenshots ==
+
+1. The audit. Everything on this page is read — the size of the role option taken with LENGTH() in the database, and what it is costing you.
+2. Measured cost. A real unserialize() of your own option, timed on your own machine, and what that works out to in workers and object-cache bandwidth.
+3. Every role, heaviest first, with what it grants, what it denies, how many deprecated level_N entries it carries, and how many users hold it.
+4. Users → Tags. Create and edit tags, with CSV import and export.
+5. The users list, with a Tags column, filter links, and bulk assign and remove.
+6. Tags on the user profile.
+
 == Frequently Asked Questions ==
 
 = Is the auditor safe to run on a production site? =
