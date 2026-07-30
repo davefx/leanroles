@@ -150,7 +150,7 @@ final class Taxonomy {
 				'user_tags_role_exists',
 				sprintf(
 					/* translators: %s: role slug. */
-					__( '"%s" is already a real role. Converting a role into a tag is not something the free tier does; create the tag under a different slug, or delete the role first.', 'user-tags' ),
+					__( '"%s" is already a real role. A tag cannot shadow one: choose another slug, or delete the role first.', 'user-tags' ),
 					$slug
 				)
 			);
