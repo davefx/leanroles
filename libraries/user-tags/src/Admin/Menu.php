@@ -16,7 +16,13 @@ defined( 'ABSPATH' ) || exit;
 
 final class Menu {
 
-	public const SLUG = 'user-tags-lib';
+	/**
+	 * The screen's page slug.
+	 *
+	 * Not the text domain, which is `user-tags-lib` because it has to match a
+	 * wordpress.org slug. This is a URL, and it reads `users.php?page=user-tags`.
+	 */
+	public const SLUG = 'user-tags';
 
 	/**
 	 * Register the submenu.

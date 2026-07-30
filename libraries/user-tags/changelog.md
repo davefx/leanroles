@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.2
+
+The admin screen's page slug is `user-tags` again. Renaming the text domain to
+`user-tags-lib` had swallowed it, because they were the same string, and the only
+symptom was a menu link pointing at `users.php?page=user-tags-lib`. A test now
+pins the two apart: one is a URL, the other has to match a wordpress.org slug.
+
 ## 1.2.0
 
 **An optional admin interface.** Screens ship with the library but load only if a
