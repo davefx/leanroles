@@ -1,0 +1,164 @@
+/* LeanRoles admin styles. */
+
+.leanroles-lede {
+	max-width: 46em;
+	font-size: 14px;
+	color: #50575e;
+}
+
+/* Headline cards */
+
+.leanroles-cards {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	margin: 20px 0 24px;
+}
+
+.leanroles-card {
+	flex: 1 1 220px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 16px 18px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-left: 4px solid #2271b1;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.leanroles-card__label {
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: #646970;
+}
+
+.leanroles-card__value {
+	font-size: 26px;
+	font-weight: 500;
+	line-height: 1.2;
+	color: #1d2327;
+}
+
+.leanroles-card__note {
+	font-size: 12px;
+	color: #646970;
+}
+
+/* Findings */
+
+.leanroles-finding {
+	max-width: 60em;
+	margin: 0 0 12px;
+	padding: 12px 16px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-left: 4px solid #72aee6;
+}
+
+.leanroles-finding--warning {
+	border-left-color: #dba617;
+}
+
+.leanroles-finding--critical {
+	border-left-color: #d63638;
+}
+
+.leanroles-finding h3 {
+	margin: 0 0 6px;
+	font-size: 14px;
+}
+
+.leanroles-finding p {
+	margin: 0 0 6px;
+	color: #50575e;
+}
+
+.leanroles-items code {
+	display: inline-block;
+	margin: 0 4px 4px 0;
+	font-size: 11px;
+}
+
+/* Tables */
+
+.leanroles-table th[scope="row"] {
+	width: 240px;
+	text-align: left;
+}
+
+.leanroles-table .leanroles-figure {
+	width: 160px;
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.leanroles-roles td,
+.leanroles-roles th {
+	vertical-align: middle;
+}
+
+.leanroles-pill {
+	display: inline-block;
+	padding: 1px 7px;
+	border-radius: 9px;
+	font-size: 11px;
+	background: #f0f0f1;
+	color: #50575e;
+}
+
+/* Controls */
+
+.leanroles-controls {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 16px;
+	margin: 12px 0 24px;
+	padding: 12px 16px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+}
+
+.leanroles-controls label {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 13px;
+}
+
+.leanroles-controls input[type="number"] {
+	width: 90px;
+}
+
+/* Badges */
+
+.leanroles-badge {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 3px;
+	font-size: 12px;
+	line-height: 1.6;
+	background: #f0f0f1;
+	color: #1d2327;
+	white-space: nowrap;
+}
+
+.column-leanroles_tags a {
+	text-decoration: none;
+}
+
+.leanroles-checkbox {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	margin-bottom: 4px;
+}
+
+.leanroles-import-errors {
+	margin: 0 0 8px 18px;
+	list-style: disc;
+	font-size: 12px;
+	color: #50575e;
+}
