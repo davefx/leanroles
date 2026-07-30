@@ -5,8 +5,8 @@ Requires at least: 5.9
 Tested up to: 7.0
 Requires PHP: 7.4
 Stable tag: 0.1.0
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Measures what your role configuration costs on every request, and adds user tags: a role-shaped label that grants nothing and weighs nothing.
 
@@ -94,7 +94,56 @@ the risky parts of this plugin are all seams it does not own — the short-circu
 contract of the metadata filters, what `WP_User::set_role()` does on its way
 past, how `WP_User_Query` builds a role clause. See `tests/README.md`.
 
+== Upgrade Notice ==
+
+= 0.1.0 =
+First release.
+
 == Changelog ==
 
 = 0.1.0 =
-* First release: auditor, user tags, public API, WP-CLI primitives.
+
+First release.
+
+**The auditor.** Strictly read-only, so it can be left on a client site without
+asking anyone first. It measures rather than estimates:
+
+* Size of the role option taken with `LENGTH()` in the database, not by
+  re-serializing in PHP — the two produce different strings, and the difference
+  is exactly the sort of small dishonesty that gets a performance plugin
+  disbelieved.
+* A real `unserialize()` of your own option, timed on your own machine after a
+  warm-up pass.
+* Resident footprint measured with the result kept alive, and the ratio of
+  in-memory to on-disk bytes.
+* What that costs in concurrent PHP workers, and in object-cache bandwidth, from
+  inputs you can adjust.
+* Roles that grant no effective permission, roles nobody holds, roles with
+  identical capability sets, subset relationships, deprecated `level_N` entries,
+  and a conservative lower bound on what inheritance could remove.
+* Capabilities it cannot account for — reported as *unrecognised*, never as
+  *orphaned*, because custom code checks capabilities no scanner can see.
+* Detection of the `object-cache.php` drop-in, with the findings toned down when
+  the drop-in already compresses or shards the blob.
+
+**User tags.** A label that behaves like a role to the whole of WordPress —
+it appears in `$user->roles`, answers `current_user_can()`, and `WP_User_Query`
+finds it — while granting no capability and never being written to the
+autoloaded role option. Create and edit tags, assign them individually or in
+bulk from the users list, filter by them, CSV import and export.
+
+The tag engine ships as a standalone library, `libraries/user-tags/`, that any
+plugin can bundle. See https://github.com/davefx/user-tags
+
+**WP-CLI.**
+
+* `wp leanroles audit` — including `--format=json` for aggregating across sites
+* `wp leanroles tag create|delete|list|assign|remove|users|export|import`
+* `wp leanroles role delete --reassign=<slug>` with a `--dry-run`
+* `wp leanroles backup create|list|restore`
+
+Bulk assignment runs in batches, releases the users it touched, and reports the
+last id it reached so an interrupted run can be resumed rather than restarted.
+
+**Requirements.** WordPress 5.9+, PHP 7.4+. Multisite aware. No dependencies and
+no build step.

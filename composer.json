@@ -2,7 +2,7 @@
     "name": "leanroles/leanroles",
     "description": "Audits what a WordPress role configuration costs on every request, and adds zero-capability user tags.",
     "type": "wordpress-plugin",
-    "license": "GPL-2.0-or-later",
+    "license": "GPL-3.0-or-later",
     "require": {
         "php": ">=7.4"
     },
@@ -31,7 +31,8 @@
             "@lint",
             "@test",
             "@test:multisite"
-        ]
+        ],
+        "build": "bin/build-zip.sh"
     },
     "config": {
         "allow-plugins": {

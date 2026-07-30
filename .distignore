@@ -19,3 +19,5 @@ tests
 vendor
 phpcs.xml.dist
 .phpcs.cache
+bin
+dist
