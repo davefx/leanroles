@@ -80,25 +80,24 @@ the first time it runs, then reuses them.
 | `integration/SizeProbeTest` | Sizes measured in the database, not recomputed in PHP |
 | `integration/StackProbeTest` | Drop-in detection, and what it refuses to claim |
 | `integration/RolesTest` | Restore points, and `delete_role` |
-| `integration/UsersListTest` | Column, filter links, bulk assignment, capability and nonce checks |
-| `integration/AdminScreensTest` | Profile, tag and audit screens; escaping; permissions |
-| `integration/AdminRenderingTest` | The screen branches that only appear in unusual states |
+| `integration/AdminScreensTest` | The audit screen; permissions |
+| `integration/AdminRenderingTest` | The audit-screen branches that only appear in unusual states |
 | `integration/PluginTest` | Bootstrap, activation, deactivation, menu |
 | `integration/WiringTest` | What each `boot()` attaches, and the defensive branches |
 | `integration/EdgeCasesTest` | The paths that only run when something has gone wrong |
 | `integration/UninstallTest` | `uninstall.php`, executed rather than merely parsed |
-| `integration/InvariantsTest` | Properties that hold everywhere: escaping, text domain, autoload, N+1 |
+| `integration/InvariantsTest` | Properties that hold everywhere: text domain, autoload, version floor, library isolation |
 | `integration/CliTagCommandTest` | `wp leanroles tag` |
 | `integration/CliAuditCommandTest` | `wp leanroles audit`, including the JSON aggregation contract |
 | `integration/CliRoleBackupCommandTest` | `wp leanroles role` and `wp leanroles backup` |
 | `integration/CliEdgeCasesTest` | Command failure paths, including a half-way interruption |
 | `integration/MultisiteTest` | Per-site tags and network-wide erase. Skipped unless run under `test:multisite` |
 
-The tag engine itself is no longer here. It lives in the bundled library at
-`libraries/user-tags/`, which keeps its own suite — `TaxonomyTest`,
+The tag engine and its screens are no longer here. They live in the bundled
+library at `libraries/user-tags/`, which keeps its own suite — `TaxonomyTest`,
 `CatalogueTest`, `StoreTest`, `RuntimeTest`, `QueryTest`, `CleanupTest`,
-`CsvTest`, `DataShapeTest` and `VersionsTest` — and travels with it to its own
-repository. `composer test` runs both, because the copy this plugin ships has to
+`CsvTest`, `DataShapeTest`, `VersionsTest`, `AdminUsersListTest` and
+`AdminInvariantsTest` — and travels with it to its own repository. `composer test` runs both, because the copy this plugin ships has to
 be the copy that was tested.
 
 `VersionsTest` is the one genuinely new thing: it builds throwaway copies on
@@ -168,8 +167,7 @@ unreachable by design.
 | Code | Why |
 |---|---|
 | `exit;` after a redirect, and the `break;` that follows it | `exit` ends the process; the redirect is caught by a filter that throws first, so the line after it never runs. Unreachable in production too. |
-| `TagsPage::do_export()` | Emits headers then `exit`s. The CSV it produces is covered directly by `CsvTest` and through `wp leanroles tag export`. |
-| `TagsPage::do_import()` body | Guarded by `is_uploaded_file()`, which is true only for a real HTTP upload. The guard itself is tested; the body is `Csv::import_assignments()`, covered directly. |
+| The library's `Screen::do_export()` and `do_import()` | One emits headers then `exit`s; the other is guarded by `is_uploaded_file()`, true only for a real HTTP upload. Both are the bundled library's, and what they call is covered directly. |
 | `Plugin::boot()`'s `is_admin()` and `defined( 'WP_CLI' )` branches | Neither is true in a test process. The classes they boot are booted and asserted directly in `WiringTest`. |
 | `Plugin::register_cli()` | `WP_CLI::add_command()` bails unless the `WP_CLI` constant is defined, and defining it would change how WordPress itself behaves for every subsequent test in the process. The command surface is asserted instead. |
 | A few `return $wp_error;` relays | They need `wp_insert_term()`, `wp_set_object_terms()` or `wp_delete_term()` to fail in ways the API cannot be made to fail from outside. One of them *is* forced, through the `pre_insert_term` filter, to prove the pattern. |
@@ -181,6 +179,6 @@ deprecation notices on PHP 8.5, and PHPUnit attributes the output to whichever
 test was running. It is WordPress 5.9's noise, not the plugin's, and the pairing
 does not occur in the wild — 5.9-era sites run PHP 7.x or 8.0.
 
-Two lines inside multi-line ternaries in `TagsPage` are reported uncovered
-although the branch is exercised — the tests assert the resulting `error=`
-redirect. That is a line-attribution artefact of the coverage driver, not a gap.
+A few lines inside multi-line ternaries are reported uncovered although the
+branch is exercised — the tests assert the resulting `error=` redirect. That is a
+line-attribution artefact of the coverage driver, not a gap.

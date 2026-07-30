@@ -9,7 +9,16 @@
 	<file>leanroles.php</file>
 	<file>uninstall.php</file>
 	<file>src</file>
-	<file>libraries</file>
+	<!--
+		The bundled library is not linted here. It carries its own ruleset and its
+		own CI, and `git subtree` only ever brings in a released copy that has
+		already passed them. Linting a vendored dependency from its host means a
+		misplaced comment in the library forces a library release to fix the
+		plugin's build.
+
+		Its shipped code is still walked by InvariantsTest, which is where the
+		properties that actually matter across the boundary are asserted.
+	-->
 
 	<!-- Test suites are not held to the shipped-code documentation rules. -->
 	<exclude-pattern>*/tests/*</exclude-pattern>
@@ -54,7 +63,7 @@
 	-->
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="leanroles,user-tags"/>
+			<property name="text_domain" type="array" value="leanroles"/>
 		</properties>
 	</rule>
 

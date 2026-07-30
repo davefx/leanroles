@@ -4,7 +4,7 @@ Tags: roles, capabilities, performance, users, multisite
 Requires at least: 5.9
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.1.0
+Stable tag: 0.2.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -96,10 +96,34 @@ past, how `WP_User_Query` builds a role clause. See `tests/README.md`.
 
 == Upgrade Notice ==
 
+= 0.2.0 =
+The tag screens moved to the bundled library and now live under Users → Tags
+rather than under the LeanRoles menu. Spanish translation added.
+
 = 0.1.0 =
 First release.
 
 == Changelog ==
+
+= 0.2.0 =
+
+**The tag screens moved to the bundled library.** They now sit under
+**Users → Tags**, which is where an administrator looks for something that
+belongs to users, rather than under the LeanRoles menu. Behaviour is the same;
+the code is now shared.
+
+The library is [User Tags](https://github.com/davefx/user-tags), bundled in
+`libraries/user-tags/` and free for any plugin to adopt. LeanRoles asks it for the
+screens the same way any other consumer would:
+
+    add_filter( 'user_tags_enable_admin', '__return_true' );
+
+**Spanish translation.** `languages/` carries the `.pot` and `es_ES`, and the
+plugin loads its own text domain — premium strings will not come from
+wordpress.org, so the mechanism has to work without it.
+
+The LeanRoles menu now holds the audit and nothing else.
+
 
 = 0.1.0 =
 

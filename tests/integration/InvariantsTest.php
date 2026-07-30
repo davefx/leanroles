@@ -33,9 +33,17 @@ class InvariantsTest extends TestCase {
 			);
 
 			foreach ( $iterator as $file ) {
-				if ( 'php' === $file->getExtension() ) {
-					$files[] = $file->getPathname();
+				if ( 'php' !== $file->getExtension() ) {
+					continue;
 				}
+
+				// Shipped code only. A test that names add_menu_page() in a
+				// string is not a call to it.
+				if ( false !== strpos( $file->getPathname(), '/tests/' ) ) {
+					continue;
+				}
+
+				$files[] = $file->getPathname();
 			}
 		}
 
