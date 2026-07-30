@@ -1,0 +1,164 @@
+/* LeanRoles admin styles. */
+
+.user-tags-lede {
+	max-width: 46em;
+	font-size: 14px;
+	color: #50575e;
+}
+
+/* Headline cards */
+
+.user-tags-cards {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	margin: 20px 0 24px;
+}
+
+.user-tags-card {
+	flex: 1 1 220px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 16px 18px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-left: 4px solid #2271b1;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.user-tags-card__label {
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: #646970;
+}
+
+.user-tags-card__value {
+	font-size: 26px;
+	font-weight: 500;
+	line-height: 1.2;
+	color: #1d2327;
+}
+
+.user-tags-card__note {
+	font-size: 12px;
+	color: #646970;
+}
+
+/* Findings */
+
+.user-tags-finding {
+	max-width: 60em;
+	margin: 0 0 12px;
+	padding: 12px 16px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-left: 4px solid #72aee6;
+}
+
+.user-tags-finding--warning {
+	border-left-color: #dba617;
+}
+
+.user-tags-finding--critical {
+	border-left-color: #d63638;
+}
+
+.user-tags-finding h3 {
+	margin: 0 0 6px;
+	font-size: 14px;
+}
+
+.user-tags-finding p {
+	margin: 0 0 6px;
+	color: #50575e;
+}
+
+.user-tags-items code {
+	display: inline-block;
+	margin: 0 4px 4px 0;
+	font-size: 11px;
+}
+
+/* Tables */
+
+.user-tags-table th[scope="row"] {
+	width: 240px;
+	text-align: left;
+}
+
+.user-tags-table .user-tags-figure {
+	width: 160px;
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.user-tags-roles td,
+.user-tags-roles th {
+	vertical-align: middle;
+}
+
+.user-tags-pill {
+	display: inline-block;
+	padding: 1px 7px;
+	border-radius: 9px;
+	font-size: 11px;
+	background: #f0f0f1;
+	color: #50575e;
+}
+
+/* Controls */
+
+.user-tags-controls {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 16px;
+	margin: 12px 0 24px;
+	padding: 12px 16px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+}
+
+.user-tags-controls label {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 13px;
+}
+
+.user-tags-controls input[type="number"] {
+	width: 90px;
+}
+
+/* Badges */
+
+.user-tags-badge {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 3px;
+	font-size: 12px;
+	line-height: 1.6;
+	background: #f0f0f1;
+	color: #1d2327;
+	white-space: nowrap;
+}
+
+.column-leanroles_tags a {
+	text-decoration: none;
+}
+
+.user-tags-checkbox {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	margin-bottom: 4px;
+}
+
+.user-tags-import-errors {
+	margin: 0 0 8px 18px;
+	list-style: disc;
+	font-size: 12px;
+	color: #50575e;
+}

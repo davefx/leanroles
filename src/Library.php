@@ -44,6 +44,8 @@ final class Library {
 		'bulk-assign',     // Resumable assignment by source role.
 		'csv',             // Import and export.
 		'multisite',       // Per-site tags on a network.
+		'i18n',            // Ships and loads its own translations.
+		'admin-ui',        // Optional screens, behind user_tags_enable_admin.
 	);
 
 	/**
@@ -69,6 +71,7 @@ final class Library {
 		 */
 		Runtime::boot();
 
+		add_action( 'init', array( __CLASS__, 'load_textdomain' ), 0 );
 		add_action( 'init', array( Taxonomy::class, 'register' ), 0 );
 		add_action( 'init', array( Catalogue::class, 'prime' ), 1 );
 
@@ -77,6 +80,10 @@ final class Library {
 		Query::boot();
 
 		add_action( 'user_tags_prune_mirrors', array( Store::class, 'prune_mirrors' ) );
+
+		// Screens, if a consumer asked for them. Nothing is loaded from disk
+		// otherwise — see UserTags\Admin\Admin.
+		add_action( 'init', array( __CLASS__, 'maybe_boot_admin' ), 5 );
 
 		/**
 		 * Fires once the library is ready to answer.
@@ -87,6 +94,82 @@ final class Library {
 		 * @param string $version Version that booted.
 		 */
 		do_action( 'user_tags_ready', $version );
+	}
+
+	/**
+	 * Load the optional admin screens.
+	 *
+	 * @return void
+	 */
+	public static function maybe_boot_admin(): void {
+		require_once self::$path . '/Admin/Admin.php';
+
+		Admin\Admin::maybe_boot();
+	}
+
+	/**
+	 * The library's own root directory, one level above src/.
+	 */
+	public static function root(): string {
+		return '' === self::$path ? '' : dirname( self::$path );
+	}
+
+	/**
+	 * Load the library's translations.
+	 *
+	 * A bundled library cannot rely on WordPress finding its strings. Just-in-time
+	 * loading looks in wp-content/languages and in the plugin directory that owns
+	 * the text domain, and this library owns `user-tags-lib` while living at an
+	 * arbitrary path inside somebody else's plugin. So it loads its own file, from
+	 * its own directory, explicitly.
+	 *
+	 * On `init` rather than earlier: the locale is not settled before that, and
+	 * WordPress 6.7 warns about text domains loaded too soon.
+	 *
+	 * Two locations are tried, in WordPress's own order of precedence:
+	 *
+	 *   1. wp-content/languages/plugins/user-tags-lib-<locale>.mo — where the
+	 *      wordpress.org translation platform puts files, and where a site owner
+	 *      puts an override. Checked first so either can win.
+	 *   2. The copy shipped inside this library.
+	 *
+	 * The first location is how Action Scheduler's strings reach a site at all:
+	 * it ships none and loads nothing, relying on its own wordpress.org listing
+	 * to populate that directory. That is enough for a library whose name is on
+	 * wordpress.org and whose strings number two. A bundled library used by a
+	 * plugin that is not listed there would leave every string untranslated, so
+	 * this one also carries its own.
+	 *
+	 * @return void
+	 */
+	public static function load_textdomain(): void {
+		if ( is_textdomain_loaded( 'user-tags-lib' ) ) {
+			return;
+		}
+
+		$locale = function_exists( 'determine_locale' ) ? determine_locale() : get_locale();
+
+		$candidates = array();
+
+		if ( defined( 'WP_LANG_DIR' ) ) {
+			$candidates[] = WP_LANG_DIR . '/plugins/user-tags-lib-' . $locale . '.mo';
+		}
+
+		/**
+		 * Filter the directory the library reads its bundled translations from.
+		 *
+		 * @param string $dir    Absolute path, no trailing slash.
+		 * @param string $locale Locale being loaded.
+		 */
+		$bundled = apply_filters( 'user_tags_languages_dir', self::root() . '/languages', $locale );
+
+		$candidates[] = $bundled . '/user-tags-lib-' . $locale . '.mo';
+
+		foreach ( $candidates as $mofile ) {
+			if ( is_readable( $mofile ) && load_textdomain( 'user-tags-lib', $mofile, $locale ) ) {
+				return;
+			}
+		}
 	}
 
 	/**

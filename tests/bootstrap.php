@@ -42,6 +42,10 @@ tests_add_filter(
 	}
 );
 
+// The optional screens are exercised by the suite, so ask for them the way a
+// consumer would.
+tests_add_filter( 'user_tags_enable_admin', '__return_true' );
+
 require $user_tags_tests_dir . '/includes/bootstrap.php';
 
 if ( ! defined( 'USER_TAGS_TEST_PATH' ) ) {
@@ -49,3 +53,9 @@ if ( ! defined( 'USER_TAGS_TEST_PATH' ) ) {
 }
 
 require_once __DIR__ . '/includes/TestCase.php';
+
+// is_admin() is false under WP-CLI, so the admin classes are not auto-loaded.
+// The tests instantiate them directly.
+foreach ( array( 'Menu', 'Badge', 'Screen', 'UsersList', 'Profile' ) as $user_tags_admin_class ) {
+	require_once dirname( __DIR__ ) . '/src/Admin/' . $user_tags_admin_class . '.php';
+}

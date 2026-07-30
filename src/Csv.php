@@ -116,12 +116,12 @@ final class Csv {
 		$index  = array_flip( $header );
 
 		if ( ! isset( $index['tags'] ) ) {
-			$result['errors'][] = __( 'The file has no "tags" column.', 'user-tags' );
+			$result['errors'][] = __( 'The file has no "tags" column.', 'user-tags-lib' );
 			return $result;
 		}
 
 		if ( ! isset( $index['user_id'] ) && ! isset( $index['user_login'] ) && ! isset( $index['user_email'] ) ) {
-			$result['errors'][] = __( 'The file needs a user_id, user_login or user_email column.', 'user-tags' );
+			$result['errors'][] = __( 'The file needs a user_id, user_login or user_email column.', 'user-tags-lib' );
 			return $result;
 		}
 
@@ -132,7 +132,7 @@ final class Csv {
 				++$result['skipped'];
 				$result['errors'][] = sprintf(
 					/* translators: %d: line number in the imported file. */
-					__( 'Line %d: no matching user.', 'user-tags' ),
+					__( 'Line %d: no matching user.', 'user-tags-lib' ),
 					$line + 2
 				);
 				continue;
@@ -148,7 +148,7 @@ final class Csv {
 				if ( ! $create_tags ) {
 					$result['errors'][] = sprintf(
 						/* translators: 1: line number, 2: tag slug. */
-						__( 'Line %1$d: tag "%2$s" does not exist.', 'user-tags' ),
+						__( 'Line %1$d: tag "%2$s" does not exist.', 'user-tags-lib' ),
 						$line + 2,
 						$slug
 					);

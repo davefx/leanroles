@@ -127,9 +127,101 @@ abstract class TestCase extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Capture whatever a renderer echoes.
+	 *
+	 * @param callable $handler Renderer.
+	 */
+	protected function capture_output( callable $handler ): string {
+		ob_start();
+
+		try {
+			$handler();
+		} finally {
+			$output = ob_get_clean();
+		}
+
+		return (string) $output;
+	}
+
+	/**
+	 * Run a handler that ends in wp_safe_redirect() and exit.
+	 *
+	 * The exit cannot be allowed to happen, so the redirect filter throws first —
+	 * wp_redirect() runs its filters before it sends a header.
+	 *
+	 * @param callable $handler Code expected to redirect.
+	 * @return string|null The redirect target, or null if it never redirected.
+	 */
+	protected function capture_redirect( callable $handler ): ?string {
+		$captured = null;
+
+		$filter = static function ( $location ) use ( &$captured ) {
+			$captured = $location;
+
+			throw new RedirectException( (string) $location );
+		};
+
+		add_filter( 'wp_redirect', $filter, 10, 1 );
+
+		try {
+			$handler();
+		} catch ( RedirectException $e ) {
+			// Expected.
+		} finally {
+			remove_filter( 'wp_redirect', $filter, 10 );
+		}
+
+		return $captured;
+	}
+
+	/**
+	 * Set up a valid admin request.
+	 *
+	 * @param array  $request    Values for the request superglobals.
+	 * @param string $nonce      Nonce action, or '' to skip.
+	 * @param string $nonce_name Field the nonce goes in.
+	 * @return int The administrator's id.
+	 */
+	protected function as_admin_request( array $request, string $nonce = '', string $nonce_name = '_wpnonce' ): int {
+		$admin_id = self::factory()->user->create( array( 'role' => 'administrator' ) );
+
+		// On a network WordPress withholds edit_users from site administrators.
+		if ( is_multisite() ) {
+			grant_super_admin( $admin_id );
+		}
+
+		wp_set_current_user( $admin_id );
+
+		if ( '' !== $nonce ) {
+			$request[ $nonce_name ] = wp_create_nonce( $nonce );
+		}
+
+		$_POST    = $request;
+		$_GET     = $request;
+		$_REQUEST = $request;
+
+		return $admin_id;
+	}
+
+	/**
+	 * Clear the request superglobals.
+	 */
+	protected function clear_request(): void {
+		$_POST    = array();
+		$_GET     = array();
+		$_REQUEST = array();
+		$_FILES   = array();
+	}
+
+	/**
 	 * The directory the running copy was loaded from.
 	 */
 	protected function library_path(): string {
 		return Library::path();
 	}
 }
+
+/**
+ * Thrown in place of the exit() that follows a redirect.
+ */
+class RedirectException extends \Exception {}

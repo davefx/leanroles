@@ -1,5 +1,37 @@
 # Changelog
 
+## 1.2.0
+
+**An optional admin interface.** Screens ship with the library but load only if a
+consumer asks:
+
+```php
+add_filter( 'user_tags_enable_admin', '__return_true' );
+```
+
+Users → Tags for creating and editing tags with CSV import and export, a column
+and filter links on the users list, bulk assign and remove, and checkboxes on the
+user profile. Nothing appears, and nothing is even read from disk, until the
+filter says so.
+
+They live here rather than in a separate package on purpose. Two bundleable
+packages with independent version numbers produce a compatibility matrix — a site
+running the screens from one release against the data layer of another, because
+two plugins bundled different pairs. One package cannot drift out of step with
+itself.
+
+**Translations.** `languages/` carries the `.pot` and a Spanish translation, and
+the library loads them itself on `init`, preferring
+`wp-content/languages/plugins/` so a site or the wordpress.org platform can win.
+
+**The text domain is now `user-tags-lib`.** It has to match a wordpress.org slug
+for that platform to have anything to translate, and `user-tags` is taken. The
+file also carries plugin headers now, so it can be activated on its own — which
+is how Action Scheduler's strings reach a site at all.
+
+Anything calling `__( '…', 'user-tags' )` against this library should move to
+`user-tags-lib`. Nothing else changed.
+
 ## 1.1.0
 
 Relicensed to GPL-3.0-or-later, with the full licence text in `LICENSE` — the
