@@ -1,0 +1,10 @@
+# Keeps development scaffolding out of `git archive` exports, the way Action
+# Scheduler does it. The plugin bundling this library excludes the same paths
+# from its own distribution archive.
+tests export-ignore
+.github export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+composer.* export-ignore
+phpcs.xml.dist export-ignore
+phpunit.xml.dist export-ignore

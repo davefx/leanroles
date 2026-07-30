@@ -156,6 +156,54 @@ A subtree rather than a composer dependency, because the code has to be inside
 your plugin's zip: WordPress users do not run `composer install`. Composer is
 fine for development, but do not let it autoload `src/` — see above.
 
+## The admin interface
+
+Screens ship with the library but load only if you ask for them:
+
+```php
+add_filter( 'user_tags_enable_admin', '__return_true' );
+```
+
+That gets you **Users → Tags** for creating and editing tags with CSV import and
+export, a column and filter links on the users list, bulk assign and remove, and
+checkboxes on the user profile. Nothing appears until the filter says so, and
+nothing is even loaded from disk.
+
+A filter rather than a function call, because it can be added at file-include
+time — before this library has booted — so there is no ordering to get right.
+
+The screens live here rather than in a separate package on purpose. Two
+bundleable packages with independent version numbers produce a compatibility
+matrix: a site could end up running the screens from one release against the data
+layer of another, because two different plugins bundled two different pairs. One
+package cannot drift out of step with itself.
+
+The menu always sits under **Users**. A library that installs itself into
+somebody's admin menu because they happened to install a plugin for something
+else is the mistake worth avoiding — the opt-in is what avoids it, not the
+placement.
+
+## Translations
+
+`languages/` carries the `.pot` template and the translations that ship with the
+library, and the library loads them itself on `init`, in WordPress's own order of
+precedence:
+
+1. `wp-content/languages/plugins/user-tags-<locale>.mo` — where the
+   wordpress.org translation platform writes, and where a site owner puts an
+   override.
+2. The copy bundled here.
+
+The first is how Action Scheduler's strings reach a site at all: it ships none
+and loads no text domain, relying on its own wordpress.org listing to fill that
+directory. Enough for a library whose name is on wordpress.org and whose
+translatable strings number two — but a bundled library used by a plugin that is
+*not* listed there would leave every string untranslated. So this one carries its
+own as well, and lets the site win.
+
+Point the bundled directory elsewhere with the `user_tags_languages_dir` filter.
+A domain already loaded by someone else is left alone.
+
 ## Requirements
 
 WordPress 5.9+, PHP 7.4+. No dependencies. Multisite aware: tags are per site.

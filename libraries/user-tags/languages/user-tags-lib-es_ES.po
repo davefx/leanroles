@@ -1,0 +1,340 @@
+# Copyright (C) 2026 David Marín
+# This file is distributed under the GPL-3.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: User Tags 1.2.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/user-tags-lib\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-07-30T04:09:07+00:00\n"
+"PO-Revision-Date: 2026-07-30T04:09:07+00:00\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: user-tags-lib\n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. Plugin Name of the plugin
+#: user-tags.php
+msgid "User Tags"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: user-tags.php
+msgid "https://github.com/davefx/user-tags"
+msgstr ""
+
+#. Description of the plugin
+#: user-tags.php
+msgid ""
+"A label that behaves like a role to the whole of WordPress while granting no "
+"capability and never touching the autoloaded role option. A library for "
+"plugins to bundle, and a plugin in its own right."
+msgstr ""
+
+#. Author of the plugin
+#: user-tags.php
+msgid "David Marín"
+msgstr ""
+
+#: src/Admin/Menu.php:28 src/Admin/Profile.php:45 src/Admin/Profile.php:55
+#: src/Admin/Screen.php:186 src/Taxonomy.php:43
+msgid "User tags"
+msgstr "Etiquetas de usuario"
+
+
+#: src/Admin/Menu.php:29 src/Admin/Profile.php:48 src/Admin/UsersList.php:87
+#: src/Admin/UsersList.php:92
+msgid "Tags"
+msgstr "Etiquetas"
+
+
+#: src/Admin/Profile.php:71
+msgid ""
+"Tags grant no capabilities. They are stored outside the role option, so "
+"adding one costs nothing on subsequent requests."
+msgstr "Las etiquetas no otorgan ninguna capacidad. Se guardan fuera de la opción de roles, así que añadir una no cuesta nada en las peticiones siguientes."
+
+
+#: src/Admin/Screen.php:28 src/Admin/Screen.php:176
+msgid "You do not have permission to manage user tags."
+msgstr "No tienes permiso para gestionar etiquetas de usuario."
+
+
+#: src/Admin/Screen.php:125
+msgid "No file was uploaded."
+msgstr "No se ha subido ningún archivo."
+
+
+#: src/Admin/Screen.php:131
+msgid "The uploaded file could not be read."
+msgstr "No se ha podido leer el archivo subido."
+
+
+#: src/Admin/Screen.php:189
+msgid ""
+"A tag grants no capability at all, and the rest of WordPress cannot tell it "
+"from a role: it shows up in $user->roles, it answers current_user_can(), and "
+"code that filters users by role slug finds it. What it does not do is live "
+"in the option that loads on every request."
+msgstr "Una etiqueta no otorga ninguna capacidad, y el resto de WordPress no la distingue de un rol: aparece en $user->roles, responde a current_user_can() y el código que filtra usuarios por slug de rol la encuentra. Lo que no hace es vivir en la opción que se carga en cada petición."
+
+
+#: src/Admin/Screen.php:213
+msgid "Tag created."
+msgstr "Etiqueta creada."
+
+
+#: src/Admin/Screen.php:214
+msgid "Tag updated."
+msgstr "Etiqueta actualizada."
+
+
+#: src/Admin/Screen.php:215
+msgid "Tag deleted."
+msgstr "Etiqueta borrada."
+
+
+#: src/Admin/Screen.php:216
+msgid "Import finished."
+msgstr "Importación terminada."
+
+
+#. translators: 1: users updated, 2: rows skipped, 3: tags created.
+#: src/Admin/Screen.php:242
+#, php-format
+msgid "%1$d user(s) updated, %2$d row(s) skipped, %3$d tag(s) created."
+msgstr "%1$d usuario(s) actualizado(s), %2$d fila(s) omitida(s), %3$d etiqueta(s) creada(s)."
+
+
+#: src/Admin/Screen.php:270
+msgid "No tags yet."
+msgstr "Todavía no hay etiquetas."
+
+
+#: src/Admin/Screen.php:275 src/Admin/UsersList.php:187
+msgid "Tag"
+msgstr "Etiqueta"
+
+
+#: src/Admin/Screen.php:276 src/Admin/Screen.php:368
+msgid "Slug"
+msgstr "Slug"
+
+
+#: src/Admin/Screen.php:277
+msgid "Users"
+msgstr "Usuarios"
+
+
+#: src/Admin/Screen.php:278 src/Admin/Screen.php:376
+msgid "Description"
+msgstr "Descripción"
+
+
+#. translators: %s: role slug.
+#: src/Admin/Screen.php:294
+#, php-format
+msgid "stands in for the role %s"
+msgstr "sustituye al rol %s"
+
+
+#: src/Admin/Screen.php:313
+msgid "Edit"
+msgstr "Editar"
+
+
+#: src/Admin/Screen.php:325
+msgid "Delete this tag and remove it from every user carrying it?"
+msgstr "¿Borrar esta etiqueta y quitarla de todos los usuarios que la llevan?"
+
+
+#: src/Admin/Screen.php:326
+msgid "Delete"
+msgstr "Borrar"
+
+
+#: src/Admin/Screen.php:351
+msgid "Edit tag"
+msgstr "Editar etiqueta"
+
+
+#: src/Admin/Screen.php:351
+msgid "Add a tag"
+msgstr "Añadir una etiqueta"
+
+
+#: src/Admin/Screen.php:362
+msgid "Name"
+msgstr "Nombre"
+
+
+#: src/Admin/Screen.php:371
+msgid ""
+"This is the identifier third-party code will see in $user->roles and in "
+"current_user_can(). If you are replacing a role, use the role's own slug so "
+"nothing else has to change."
+msgstr "Este es el identificador que verá el código de terceros en $user->roles y en current_user_can(). Si estás sustituyendo un rol, usa el slug de ese rol para que nada más tenga que cambiar."
+
+
+#: src/Admin/Screen.php:382
+msgid "Colour"
+msgstr "Color"
+
+
+#: src/Admin/Screen.php:388
+msgid "Replaces role"
+msgstr "Sustituye al rol"
+
+
+#: src/Admin/Screen.php:390
+msgid ""
+"A note for your own benefit. It records which role this tag was created to "
+"stand in for, and nothing else."
+msgstr "Una nota para ti. Registra a qué rol sustituye esta etiqueta, y nada más."
+
+
+#: src/Admin/Screen.php:395
+msgid "Save tag"
+msgstr "Guardar etiqueta"
+
+
+#: src/Admin/Screen.php:395 src/Admin/UsersList.php:201
+msgid "Add tag"
+msgstr "Añadir etiqueta"
+
+
+#: src/Admin/Screen.php:401
+msgid "Cancel"
+msgstr "Cancelar"
+
+
+#: src/Admin/Screen.php:412
+msgid "Import and export"
+msgstr "Importar y exportar"
+
+
+#: src/Admin/Screen.php:423
+msgid "Export assignments"
+msgstr "Exportar asignaciones"
+
+
+#: src/Admin/Screen.php:435
+msgid "Export tag list"
+msgstr "Exportar lista de etiquetas"
+
+
+#: src/Admin/Screen.php:446
+msgid "Create tags named in the file that do not exist yet"
+msgstr "Crear las etiquetas nombradas en el archivo que aún no existan"
+
+
+#: src/Admin/Screen.php:447
+msgid "Replace each user's tags instead of adding to them"
+msgstr "Reemplazar las etiquetas de cada usuario en lugar de añadirlas a las que ya tiene"
+
+
+#: src/Admin/Screen.php:452
+msgid ""
+"The file needs a \"tags\" column holding semicolon-separated slugs, plus one "
+"of user_id, user_login or user_email."
+msgstr "El archivo necesita una columna «tags» con slugs separados por punto y coma, más una de user_id, user_login o user_email."
+
+
+#: src/Admin/Screen.php:455
+msgid "Import"
+msgstr "Importar"
+
+
+#: src/Admin/UsersList.php:53
+msgid "Pick a tag and at least one user first."
+msgstr "Elige primero una etiqueta y al menos un usuario."
+
+
+#. translators: 1: number of users, 2: tag slug.
+#: src/Admin/UsersList.php:60
+#, php-format
+msgid "Removed \"%2$s\" from %1$d user(s)."
+msgstr "Se ha quitado «%2$s» de %1$d usuario(s)."
+
+
+#. translators: 1: number of users, 2: tag slug.
+#: src/Admin/UsersList.php:62
+#, php-format
+msgid "Tagged %1$d user(s) with \"%2$s\"."
+msgstr "Se ha etiquetado a %1$d usuario(s) con «%2$s»."
+
+
+#: src/Admin/UsersList.php:189
+msgid "Tag…"
+msgstr "Etiqueta…"
+
+
+#: src/Admin/UsersList.php:202
+msgid "Remove tag"
+msgstr "Quitar etiqueta"
+
+
+#: src/Admin/UsersList.php:214
+msgid "You do not have permission to tag users."
+msgstr "No tienes permiso para etiquetar usuarios."
+
+
+#: src/Csv.php:119
+msgid "The file has no \"tags\" column."
+msgstr "El archivo no tiene columna «tags»."
+
+
+#: src/Csv.php:124
+msgid "The file needs a user_id, user_login or user_email column."
+msgstr "El archivo necesita una columna user_id, user_login o user_email."
+
+
+#. translators: %d: line number in the imported file.
+#: src/Csv.php:135
+#, php-format
+msgid "Line %d: no matching user."
+msgstr "Línea %d: ningún usuario coincide."
+
+
+#. translators: 1: line number, 2: tag slug.
+#: src/Csv.php:151
+#, php-format
+msgid "Line %1$d: tag \"%2$s\" does not exist."
+msgstr "Línea %1$d: la etiqueta «%2$s» no existe."
+
+
+#: src/Store.php:126
+msgid "That user does not exist."
+msgstr "Ese usuario no existe."
+
+
+#: src/Taxonomy.php:44
+msgid "User tag"
+msgstr "Etiqueta de usuario"
+
+
+#: src/Taxonomy.php:94
+msgid "A tag needs a slug."
+msgstr "Una etiqueta necesita un slug."
+
+
+#: src/Taxonomy.php:145
+msgid "A tag with that slug already exists."
+msgstr "Ya existe una etiqueta con ese slug."
+
+
+#. translators: %s: role slug.
+#: src/Taxonomy.php:153
+#, php-format
+msgid ""
+"\"%s\" is already a real role. A tag cannot shadow one: choose another slug, "
+"or delete the role first."
+msgstr "«%s» ya es un rol real. Una etiqueta no puede ocultarlo: elige otro slug, o borra el rol primero."
+
+
+#: src/Taxonomy.php:173 src/Taxonomy.php:229
+msgid "That tag does not exist."
+msgstr "Esa etiqueta no existe."
