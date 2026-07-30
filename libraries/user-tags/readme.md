@@ -149,7 +149,7 @@ bootstrap requires its files explicitly. Do not add this library to a `files` or
 
 ```sh
 git subtree add --prefix libraries/user-tags \
-    https://github.com/davefx/user-tags.git main --squash
+    https://github.com/davefx/user-tags.git 1.1.0 --squash
 ```
 
 A subtree rather than a composer dependency, because the code has to be inside
@@ -159,6 +159,8 @@ fine for development, but do not let it autoload `src/` — see above.
 ## Requirements
 
 WordPress 5.9+, PHP 7.4+. No dependencies. Multisite aware: tags are per site.
+
+GPL-3.0-or-later.
 
 ## Bundling checklist
 

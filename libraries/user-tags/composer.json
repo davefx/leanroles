@@ -2,7 +2,7 @@
     "name": "davefx/user-tags",
     "description": "A WordPress user tag: behaves like a role to the whole of WordPress, grants nothing, and never touches the autoloaded role option.",
     "type": "library",
-    "license": "GPL-2.0-or-later",
+    "license": "GPL-3.0-or-later",
     "keywords": [
         "wordpress",
         "users",

@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.1.0
+
+Relicensed to GPL-3.0-or-later, with the full licence text in `LICENSE` — the
+previous file carried only the notice, so GitHub reported the repository as
+having no detectable licence.
+
+Copies already obtained under 1.0.x keep their GPL-2.0-or-later grant. A plugin
+that is GPLv2-only cannot bundle this version; one that is "GPLv2 or later" can.
+
+## 1.0.1
+
+Reword the slug-collision message so it explains the refusal rather than
+referring to a product tier. No functional change.
+
 ## 1.0.0
 
 First release, extracted from LeanRoles 0.1.0.
