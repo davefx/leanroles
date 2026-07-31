@@ -350,6 +350,32 @@ class VersionsTest extends TestCase {
 		);
 	}
 
+	public function test_a_standalone_copy_counts_even_when_it_lost_the_version_tie(): void {
+		// Two plugins bundling the identical version: the second registration is
+		// recorded as a duplicate rather than given a seat. If the one that lost
+		// is the standalone plugin, its screens must not vanish.
+		$plugins = realpath( WP_PLUGIN_DIR );
+		$dir     = $plugins . '/ut-dup-' . uniqid();
+		mkdir( $dir );
+		$entry = $dir . '/user-tags.php';
+		file_put_contents( $entry, '<?php // pretend plugin' );
+
+		$saved = $GLOBALS['user_tags_registry'];
+
+		$GLOBALS['user_tags_registry']['duplicates'][] = array(
+			'version' => '1.0.0',
+			'source'  => $entry,
+		);
+
+		$standalone = Library::is_standalone();
+
+		$GLOBALS['user_tags_registry'] = $saved;
+		unlink( $entry );
+		rmdir( $dir );
+
+		$this->assertTrue( $standalone );
+	}
+
 	public function test_the_screens_default_to_standalone(): void {
 		// The filter result cannot be asserted here: this suite forces it on so
 		// it can exercise the screens. What matters is what the default is
