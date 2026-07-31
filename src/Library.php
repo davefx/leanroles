@@ -115,6 +115,58 @@ final class Library {
 	}
 
 	/**
+	 * Is a copy of this library installed as a plugin in its own right?
+	 *
+	 * Every registered copy is considered, not just the one that booted. If a
+	 * site owner activated the User Tags plugin, they asked for its screens —
+	 * and it would be baffling for those screens to disappear because some other
+	 * plugin happened to bundle a newer copy that ends up running instead.
+	 *
+	 * Where the entry file sits is the test: a plugin's own directory lives
+	 * directly inside wp-content/plugins, while a bundled copy is further down,
+	 * inside the directory of the plugin that carries it.
+	 */
+	public static function is_standalone(): bool {
+		if ( ! class_exists( 'UserTags_Versions', false ) ) {
+			return false;
+		}
+
+		$roots = array();
+
+		foreach ( array( 'WP_PLUGIN_DIR', 'WPMU_PLUGIN_DIR' ) as $constant ) {
+			if ( defined( $constant ) ) {
+				$real = realpath( constant( $constant ) );
+
+				if ( $real ) {
+					$roots[] = $real;
+				}
+			}
+		}
+
+		if ( ! $roots ) {
+			return false;
+		}
+
+		foreach ( \UserTags_Versions::copies() as $copy ) {
+			if ( empty( $copy['source'] ) ) {
+				continue;
+			}
+
+			$source = realpath( $copy['source'] );
+
+			if ( ! $source ) {
+				continue;
+			}
+
+			if ( in_array( dirname( $source, 2 ), $roots, true ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Load the library's translations.
 	 *
 	 * A bundled library cannot rely on WordPress finding its strings. Just-in-time
@@ -222,6 +274,7 @@ final class Library {
 			'copies'       => class_exists( 'UserTags_Versions', false ) ? \UserTags_Versions::copies() : array(),
 			'duplicates'   => class_exists( 'UserTags_Versions', false ) ? \UserTags_Versions::duplicates() : array(),
 			'booted_early' => class_exists( 'UserTags_Versions', false ) ? \UserTags_Versions::booted_early() : false,
+			'standalone'   => self::is_standalone(),
 			'tag_count'    => count( Catalogue::all() ),
 		);
 	}

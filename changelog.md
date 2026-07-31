@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.3.0
+
+**Activated as a plugin, it now registers its screens by itself.** Somebody who
+installs User Tags from wordpress.org asked for its interface; making them
+discover a filter first would be a plugin that appears to do nothing.
+
+The default for `user_tags_enable_admin` is now whether a copy is installed as a
+plugin in its own right — its directory sitting directly inside
+`wp-content/plugins` rather than further down inside somebody else's plugin. When
+only bundled, the default is still off, which is the case the filter exists for.
+
+Every registered copy is considered, not just the one that booted: if the plugin
+is active, its screens should not disappear because another plugin happened to
+bundle a newer copy that runs instead.
+
+`user_tags_diagnostics()` reports `standalone`.
+
 ## 1.2.2
 
 The admin screen's page slug is `user-tags` again. Renaming the text domain to
