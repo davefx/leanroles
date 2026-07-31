@@ -40,12 +40,21 @@ final class Admin {
 			return;
 		}
 
-		/**
-		 * Whether to register the bundled admin screens.
-		 *
-		 * @param bool $enable Default false.
+		/*
+		 * On by default when a copy is installed as a plugin in its own right:
+		 * somebody who activated User Tags asked for its screens, and a plugin
+		 * that appears to do nothing is a bug report waiting to happen. Off by
+		 * default when the library is only bundled inside somebody else's
+		 * plugin, which is the case this filter exists for.
 		 */
-		if ( ! apply_filters( 'user_tags_enable_admin', false ) ) {
+		$default = Library::is_standalone();
+
+		/**
+		 * Whether to register the admin screens.
+		 *
+		 * @param bool $enable True when a copy is an activated plugin of its own.
+		 */
+		if ( ! apply_filters( 'user_tags_enable_admin', $default ) ) {
 			return;
 		}
 
@@ -102,10 +111,10 @@ final class Admin {
 	/**
 	 * URL of a file inside the library.
 	 *
-	 * plugins_url() cannot be trusted here: the library sits at an arbitrary
-	 * depth inside somebody else's plugin, and may be inside a mu-plugin or a
-	 * theme. The path is resolved against WP_CONTENT_DIR instead, which covers
-	 * every one of those.
+	 * Note that plugins_url() cannot be trusted here: the library sits at an
+	 * arbitrary depth inside somebody else's plugin, and may be inside a
+	 * mu-plugin or a theme. The path is resolved against WP_CONTENT_DIR instead,
+	 * which covers every one of those.
 	 *
 	 * @param string $relative Path relative to the library root.
 	 */

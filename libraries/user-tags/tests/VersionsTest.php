@@ -313,6 +313,64 @@ class VersionsTest extends TestCase {
 		$this->assertIsArray( $diagnostics['features'] );
 	}
 
+	// ------------------------------------------------- standalone vs bundled
+
+	public function test_a_bundled_copy_is_not_standalone(): void {
+		// The suite runs the library from its own checkout, not from inside a
+		// plugin directory, so nothing here looks like an activated plugin.
+		$this->assertFalse( Library::is_standalone() );
+	}
+
+	public function test_a_copy_living_directly_in_the_plugins_directory_is_standalone(): void {
+		$plugins = realpath( WP_PLUGIN_DIR );
+
+		$this->assertNotFalse( $plugins, 'WP_PLUGIN_DIR should exist in the test install.' );
+
+		$dir = $plugins . '/ut-standalone-' . uniqid();
+		mkdir( $dir );
+		$entry = $dir . '/user-tags.php';
+		file_put_contents( $entry, '<?php // pretend plugin' );
+
+		$saved = $GLOBALS['user_tags_registry'];
+
+		$GLOBALS['user_tags_registry']['copies']['9.9.9'] = array(
+			'bootstrap' => $entry,
+			'source'    => $entry,
+		);
+
+		$standalone = Library::is_standalone();
+
+		$GLOBALS['user_tags_registry'] = $saved;
+		unlink( $entry );
+		rmdir( $dir );
+
+		$this->assertTrue(
+			$standalone,
+			'A directory sitting directly inside wp-content/plugins is a plugin in its own right.'
+		);
+	}
+
+	public function test_the_screens_default_to_standalone(): void {
+		// The filter result cannot be asserted here: this suite forces it on so
+		// it can exercise the screens. What matters is what the default is
+		// derived from — activate the plugin, get the screens, without having to
+		// know a filter exists.
+		$source = file_get_contents( dirname( __DIR__ ) . '/src/Admin/Admin.php' );
+
+		$this->assertStringContainsString(
+			'$default = Library::is_standalone();',
+			$source
+		);
+		$this->assertStringContainsString(
+			'apply_filters( \'user_tags_enable_admin\', $default )',
+			$source
+		);
+	}
+
+	public function test_diagnostics_report_whether_it_is_standalone(): void {
+		$this->assertArrayHasKey( 'standalone', user_tags_diagnostics() );
+	}
+
 	public function test_the_ready_hook_fires(): void {
 		$this->assertGreaterThan(
 			0,

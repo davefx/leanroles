@@ -158,7 +158,11 @@ fine for development, but do not let it autoload `src/` — see above.
 
 ## The admin interface
 
-Screens ship with the library but load only if you ask for them:
+Activated as a plugin in its own right, User Tags registers its screens without
+being asked — installing it and finding nothing would be a plugin that appears
+broken.
+
+Bundled inside another plugin, they load only if that plugin asks:
 
 ```php
 add_filter( 'user_tags_enable_admin', '__return_true' );
