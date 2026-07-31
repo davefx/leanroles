@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.1
+
+A standalone copy now counts as standalone even when it lost a version tie.
+
+Two plugins bundling the identical version means the second registration is
+recorded as a duplicate rather than given a seat. If the one that lost happened
+to be the plugin the site owner installed, its screens disappeared, for no reason
+visible from the outside. Duplicates are considered now, as 1.3.0 said they were.
+
 ## 1.3.0
 
 **Activated as a plugin, it now registers its screens by itself.** Somebody who

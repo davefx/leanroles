@@ -147,7 +147,19 @@ final class Library {
 			return false;
 		}
 
-		foreach ( \UserTags_Versions::copies() as $copy ) {
+		/*
+		 * Duplicates as well as copies. Two plugins bundling the identical
+		 * version means the second registration is recorded as a duplicate
+		 * rather than given a seat — and if the one that lost the coin toss is
+		 * the standalone plugin, its screens would vanish for no reason the
+		 * site owner could see.
+		 */
+		$registered = array_merge(
+			array_values( \UserTags_Versions::copies() ),
+			\UserTags_Versions::duplicates()
+		);
+
+		foreach ( $registered as $copy ) {
 			if ( empty( $copy['source'] ) ) {
 				continue;
 			}
