@@ -1,12 +1,13 @@
 <?php
 /**
  * Plugin Name:       LeanRoles
- * Plugin URI:        https://example.com/leanroles
+ * Plugin URI:        https://github.com/davefx/leanroles
  * Description:       Measures what your role configuration costs on every request, and adds user tags — a zero-capability primitive that behaves like a role without weighing like one.
  * Version:           0.2.0
  * Requires at least: 5.9
  * Requires PHP:      7.4
- * Author:            LeanRoles
+ * Author:            David Marín
+ * Author URI:        https://profiles.wordpress.org/davefx/
  * License:           GPL-3.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain:       leanroles

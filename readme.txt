@@ -1,5 +1,5 @@
 === LeanRoles ===
-Contributors: leanroles
+Contributors: davefx
 Tags: roles, capabilities, performance, users, multisite
 Requires at least: 5.9
 Tested up to: 7.0
@@ -128,8 +128,8 @@ screens the same way any other consumer would:
     add_filter( 'user_tags_enable_admin', '__return_true' );
 
 **Spanish translation.** `languages/` carries the `.pot` and `es_ES`, and the
-plugin loads its own text domain — premium strings will not come from
-wordpress.org, so the mechanism has to work without it.
+plugin loads its own text domain rather than waiting for one to be loaded for
+it, so the strings arrive whichever way the plugin was installed.
 
 The LeanRoles menu now holds the audit and nothing else.
 
