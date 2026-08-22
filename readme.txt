@@ -4,7 +4,7 @@ Tags: roles, capabilities, performance, users, multisite
 Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.2.0
+Stable tag: 0.2.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -105,6 +105,9 @@ past, how `WP_User_Query` builds a role clause. See `tests/README.md`.
 
 == Upgrade Notice ==
 
+= 0.2.1 =
+Fixes the Users → Tags menu link, which led nowhere in 0.2.0.
+
 = 0.2.0 =
 The tag screens moved to the bundled library and now live under Users → Tags
 rather than under the LeanRoles menu. Spanish translation added.
@@ -113,6 +116,21 @@ rather than under the LeanRoles menu. Spanish translation added.
 First release.
 
 == Changelog ==
+
+= 0.2.1 =
+
+**The Users → Tags link works.** The archive published as 0.2.0 carried an
+earlier build of the bundled library, in which renaming the text domain had
+swallowed the admin page slug — the two were the same string. The menu item
+pointed at a page that did not exist, and clicking it said you were not allowed
+to access it. Nothing was wrong with your permissions.
+
+The library is now 1.3.3, which also means: activated on its own it registers
+its own screens, so a site can install User Tags without LeanRoles; and the
+whole plugin clears the wordpress.org Plugin Check. That last one found a
+handful of things worth fixing here too — a stale `Tested up to`, a hidden file
+inside the archive, three unescaped integers in the audit's worker-model inputs,
+and `is_writable()` where core's `wp_is_writable()` belongs.
 
 = 0.2.0 =
 
