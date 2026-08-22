@@ -44,6 +44,11 @@ done < "${ROOT}/.distignore"
 # The library travels as a subtree, so its development scaffolding arrives with
 # it. Named here rather than in .distignore because .distignore also governs
 # what the plugin's own repository publishes.
+#
+# Its readme.txt goes too. That file is written for the wordpress.org directory,
+# and a second directory readme inside one plugin's archive is a thing a
+# reviewer has to stop and work out. readme.md, which documents bundling the
+# library, stays: whoever finds libraries/user-tags/ wants exactly that.
 EXCLUDES+=(
 	"--exclude=libraries/*/tests"
 	"--exclude=libraries/*/composer.json"
@@ -53,6 +58,7 @@ EXCLUDES+=(
 	"--exclude=libraries/*/.github"
 	"--exclude=libraries/*/.gitignore"
 	"--exclude=libraries/*/.gitattributes"
+	"--exclude=libraries/*/readme.txt"
 )
 
 rsync -a "${EXCLUDES[@]}" --exclude='.git' --exclude='dist' \

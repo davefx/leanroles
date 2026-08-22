@@ -4,7 +4,7 @@ Tags: roles, capabilities, performance, users, multisite
 Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.2.1
+Stable tag: 0.2.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -105,6 +105,9 @@ past, how `WP_User_Query` builds a role clause. See `tests/README.md`.
 
 == Upgrade Notice ==
 
+= 0.2.2 =
+Housekeeping in what the archive contains. No functional change.
+
 = 0.2.1 =
 Fixes the Users → Tags menu link, which led nowhere in 0.2.0.
 
@@ -116,6 +119,20 @@ rather than under the LeanRoles menu. Spanish translation added.
 First release.
 
 == Changelog ==
+
+= 0.2.2 =
+
+Housekeeping in what ships, with no functional change.
+
+The bundled library's `readme.txt` no longer travels in the archive. It is
+written for the wordpress.org directory, and a second directory readme inside
+one plugin is something a reviewer has to stop and work out. Its `readme.md`,
+which documents bundling the library, stays — whoever goes looking in
+`libraries/user-tags/` wants that one.
+
+The library is 1.3.4, which is called User Tags again. The name had been changed
+to claim a wordpress.org permalink for it; it is not being listed there
+separately, so the name was buying nothing.
 
 = 0.2.1 =
 
