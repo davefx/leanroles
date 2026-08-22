@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.3.4
+
+The plugin name is `User Tags` again.
+
+It had been changed to `User Tags Lib` to claim a wordpress.org permalink — the
+directory derives the permalink from the plugin name, once and permanently. The
+library is not being listed there, so the name was buying nothing, and the
+header justified itself with a reason that no longer applied. A header that
+explains itself with something untrue is worse than no explanation.
+
+The text domain stays `user-tags-lib`. That one is not about the directory:
+`user-tags` belongs to an unrelated plugin, and two plugins loading translations
+under a single domain on the same site surfaces as somebody else's strings
+appearing in these screens.
+
 ## 1.3.3
 
 Clears the wordpress.org Plugin Check, which the CI now runs against the tree

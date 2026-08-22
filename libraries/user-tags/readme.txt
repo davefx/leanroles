@@ -1,10 +1,10 @@
-=== User Tags Lib ===
+=== User Tags ===
 Contributors: davefx
 Tags: users, roles, capabilities, segmentation, performance
 Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -100,6 +100,9 @@ Yes. Tags are per site.
 
 == Upgrade Notice ==
 
+= 1.3.4 =
+The plugin name is User Tags again. No change to how the library behaves.
+
 = 1.3.3 =
 Packaging only. No change to how the library behaves.
 
@@ -113,6 +116,16 @@ Fixes the screens vanishing when another plugin bundles an identical copy.
 Installed as a plugin, the screens now appear without a filter being set.
 
 == Changelog ==
+
+= 1.3.4 =
+* The plugin name is `User Tags` again. It had been changed to `User Tags Lib`
+  to claim a wordpress.org permalink, which the directory derives from the name
+  and never lets you change; the library is not being listed there, so the name
+  was buying nothing and the header explained itself with a reason that no
+  longer applied.
+* The text domain stays `user-tags-lib`. `user-tags` belongs to an unrelated
+  plugin, and two plugins loading translations under one domain on the same site
+  shows up as somebody else's strings in these screens.
 
 = 1.3.3 =
 * Clears the wordpress.org Plugin Check. The findings were annotations rather

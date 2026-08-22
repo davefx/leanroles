@@ -1,10 +1,10 @@
 <?php
 /**
- * Plugin Name: User Tags Lib
+ * Plugin Name: User Tags
  * Plugin URI: https://github.com/davefx/user-tags
  * Description: A label that behaves like a role to the whole of WordPress while granting no capability and never touching the autoloaded role option. A library for plugins to bundle, and a plugin in its own right.
  * Author: David Marín
- * Version: 1.3.3
+ * Version: 1.3.4
  * License: GPL-3.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: user-tags-lib
@@ -14,15 +14,14 @@
  *
  * The entry point every bundling plugin includes.
  *
- * Activating this on its own works too, and is how the wordpress.org translation
- * platform comes to have anything to translate — the text domain has to match a
- * slug that exists there. Action Scheduler does the same thing, and it is the
- * only reason its own strings ever reach a site.
+ * Activating this on its own works too — a site that wants tags and has no
+ * plugin bundling them can install this directly — which is why the file
+ * carries plugin headers at all.
  *
- * The header says "User Tags Lib" because wordpress.org turns the plugin name
- * into the permalink, once and permanently, and `user-tags` belongs to somebody
- * else. `user-tags-lib` is the slug the text domain was already named for. The
- * library calls itself User Tags everywhere a slug is not involved.
+ * The text domain stays `user-tags-lib` rather than `user-tags`: the latter
+ * belongs to an unrelated plugin in the wordpress.org directory, and two
+ * plugins loading translations under one domain on the same site is a fault
+ * that surfaces as somebody else's strings appearing in these screens.
  *
  * A user tag is a label that behaves like a role to the whole of WordPress —
  * it appears in $user->roles, it answers current_user_can(), WP_User_Query
@@ -42,7 +41,7 @@
  * readme.md, "Lessons taken from Action Scheduler".
  *
  * @package UserTags
- * @version 1.3.3
+ * @version 1.3.4
  *
  * Copyright (C) 2026 David Marín
  *
@@ -63,4 +62,4 @@ defined( 'ABSPATH' ) || exit;
 
 require_once __DIR__ . '/src/Versions.php';
 
-UserTags_Versions::register( '1.3.3', __DIR__ . '/src/bootstrap.php', __FILE__ );
+UserTags_Versions::register( '1.3.4', __DIR__ . '/src/bootstrap.php', __FILE__ );

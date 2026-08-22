@@ -27,4 +27,4 @@ require_once __DIR__ . '/Csv.php';
 require_once __DIR__ . '/Library.php';
 require_once __DIR__ . '/functions.php';
 
-UserTags\Library::boot( '1.3.3', __DIR__ );
+UserTags\Library::boot( '1.3.4', __DIR__ );
