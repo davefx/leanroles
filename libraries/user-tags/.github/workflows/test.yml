@@ -57,3 +57,22 @@ jobs:
           tools: composer
       - run: composer install --no-interaction
       - run: composer lint
+
+  plugin-check:
+    name: wordpress.org plugin check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # `git archive` applies the export-ignore rules in .gitattributes, so this
+      # is the tree a consumer bundling a tag receives and the tree the
+      # directory would review — not the repository, which carries the test
+      # suite and the composer files.
+      - name: Build
+        run: |
+          mkdir -p build/user-tags-lib
+          git archive HEAD | tar -x -C build/user-tags-lib
+
+      - uses: wordpress/plugin-check-action@v1
+        with:
+          build-dir: ./build/user-tags-lib
