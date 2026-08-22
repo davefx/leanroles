@@ -92,9 +92,14 @@ jobs:
           ARCHIVE="$(./bin/build-zip.sh | head -1)"
           unzip -q "${ARCHIVE}" -d build
 
+      # The bundled library is excluded because it is a plugin in its own right
+      # with its own text domain, and the check assumes one domain per plugin:
+      # every string in libraries/ is otherwise reported as mismatched. It is
+      # checked, against its own slug, in its own repository.
       - uses: wordpress/plugin-check-action@v1
         with:
           build-dir: ./build/leanroles
+          exclude-directories: libraries
 
   release:
     name: attach the distributable zip

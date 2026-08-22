@@ -135,10 +135,17 @@ final class StackProbe {
 	 * Enough to identify it; not so much that a megabyte-long bundled drop-in
 	 * turns the audit into a file read benchmark.
 	 *
+	 * Not WP_Filesystem: it reads whole files, which is the one thing this must
+	 * not do, and it wants credentials the audit has no business asking for. The
+	 * file is a PHP drop-in already loaded into this very process — reading its
+	 * first quarter-megabyte read-only is not a filesystem write the site owner
+	 * needs to authorise.
+	 *
 	 * @param string $path  Path.
 	 * @param int    $bytes Bytes.
 	 */
 	private static function read_head( string $path, int $bytes = 262144 ): ?string {
+		// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_fopen, WordPress.WP.AlternativeFunctions.file_system_operations_fread, WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 		$handle = @fopen( $path, 'r' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 
 		if ( ! $handle ) {
@@ -147,6 +154,7 @@ final class StackProbe {
 
 		$source = fread( $handle, $bytes );
 		fclose( $handle );
+		// phpcs:enable WordPress.WP.AlternativeFunctions.file_system_operations_fopen, WordPress.WP.AlternativeFunctions.file_system_operations_fread, WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 
 		return false === $source ? null : $source;
 	}

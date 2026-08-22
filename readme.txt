@@ -2,7 +2,7 @@
 Contributors: davefx
 Tags: roles, capabilities, performance, users, multisite
 Requires at least: 5.9
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 0.2.0
 License: GPLv3 or later

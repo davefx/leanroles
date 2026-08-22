@@ -52,6 +52,7 @@ EXCLUDES+=(
 	"--exclude=libraries/*/phpcs.xml.dist"
 	"--exclude=libraries/*/.github"
 	"--exclude=libraries/*/.gitignore"
+	"--exclude=libraries/*/.gitattributes"
 )
 
 rsync -a "${EXCLUDES[@]}" --exclude='.git' --exclude='dist' \

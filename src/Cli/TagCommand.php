@@ -438,7 +438,7 @@ class TagCommand {
 
 		$directory = dirname( $file );
 
-		if ( ! is_dir( $directory ) || ! is_writable( $directory ) ) {
+		if ( ! is_dir( $directory ) || ! wp_is_writable( $directory ) ) {
 			WP_CLI::error( sprintf( 'Could not write to %s: the directory is not writable.', $file ) );
 		}
 

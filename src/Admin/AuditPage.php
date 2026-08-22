@@ -270,21 +270,21 @@ final class AuditPage {
 		printf( '<input type="hidden" name="page" value="%s" />', esc_attr( Menu::AUDIT_SLUG ) );
 
 		printf(
-			'<label>%s <input type="number" name="rps" min="0" step="1" value="%d" /></label>',
+			'<label>%s <input type="number" name="rps" min="0" step="1" value="%s" /></label>',
 			esc_html__( 'Requests per second', 'leanroles' ),
-			$rps
+			esc_attr( (string) $rps )
 		);
 
 		printf(
-			'<label>%s <input type="number" name="ram" min="1" step="1" value="%d" /></label>',
+			'<label>%s <input type="number" name="ram" min="1" step="1" value="%s" /></label>',
 			esc_html__( 'Pool RAM (MB)', 'leanroles' ),
-			$ram
+			esc_attr( (string) $ram )
 		);
 
 		printf(
-			'<label>%s <input type="number" name="worker" min="1" step="1" value="%d" /></label>',
+			'<label>%s <input type="number" name="worker" min="1" step="1" value="%s" /></label>',
 			esc_html__( 'Per worker (MB)', 'leanroles' ),
-			$worker
+			esc_attr( (string) $worker )
 		);
 
 		printf(
