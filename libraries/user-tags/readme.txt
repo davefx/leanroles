@@ -1,10 +1,10 @@
-=== User Tags ===
+=== User Tags Lib ===
 Contributors: davefx
 Tags: users, roles, capabilities, segmentation, performance
 Requires at least: 5.9
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -52,6 +52,25 @@ A taxonomy for the catalogue, term relationships for the assignments, and one
 usermeta key as a read mirror. No custom tables, no schema version, no
 migrations, and nothing added to the autoloaded options.
 
+== Installation ==
+
+As a plugin: install and activate it, then open **Users → Tags**. Nothing else
+is needed and nothing is written to the role option.
+
+Inside your own plugin: copy `user-tags/` in — `git subtree`, a submodule or a
+plain copy — and require one file from your main plugin file, before your own
+bootstrap:
+
+    require_once __DIR__ . '/libraries/user-tags/user-tags.php';
+
+Do not autoload `src/` with Composer: the autoloader would map a class to
+whichever copy registered it first, which need not be the copy the registry
+chose. The winning bootstrap requires its own files.
+
+Bundled, the screens stay off unless you ask for them:
+
+    add_filter( 'user_tags_enable_admin', '__return_true' );
+
 == Frequently Asked Questions ==
 
 = Will `current_user_can( 'my_tag' )` work? =
@@ -79,7 +98,46 @@ what your users can do changes. The assignments stay in the database.
 
 Yes. Tags are per site.
 
+== Upgrade Notice ==
+
+= 1.3.2 =
+Packaging only. No change to how the library behaves.
+
+= 1.3.1 =
+Fixes the screens vanishing when another plugin bundles an identical copy.
+
+= 1.3.0 =
+Installed as a plugin, the screens now appear without a filter being set.
+
 == Changelog ==
+
+= 1.3.2 =
+* Packaging for the wordpress.org directory: the plugin name is `User Tags Lib`,
+  because the directory turns that name into the permalink once and permanently
+  and `user-tags` belongs to another plugin. `user-tags-lib` is the slug the text
+  domain was already named for. Nothing in the library behaves differently, and
+  it still calls itself User Tags everywhere a slug is not involved.
+* An Installation section, and a changelog that reaches the stable tag.
+
+= 1.3.1 =
+* A copy installed as a plugin counts as standalone even when it lost a version
+  tie. Two plugins bundling the identical version means the second registration
+  is recorded as a duplicate rather than given a seat; if the loser was the
+  plugin the site owner installed, its screens disappeared for no visible
+  reason. Duplicates are considered now, as 1.3.0 said they were.
+
+= 1.3.0 =
+* Activated as a plugin, it registers its screens by itself. The default for
+  `user_tags_enable_admin` is now whether a copy is installed as a plugin in its
+  own right — its directory sitting directly inside `wp-content/plugins` rather
+  than further down inside somebody else's plugin. Bundled, the default is still
+  off, which is the case the filter exists for.
+* `user_tags_diagnostics()` reports `standalone`.
+
+= 1.2.2 =
+* The admin page slug is `user-tags` again. Renaming the text domain had
+  swallowed it, because the two were the same string, and the only symptom was a
+  menu link pointing somewhere that did not exist.
 
 = 1.2.0 =
 * Optional admin screens, behind the `user_tags_enable_admin` filter.

@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.3.2
+
+Packaging for the wordpress.org directory. Nothing behaves differently.
+
+The plugin name in the header is now `User Tags Lib`. The directory turns that
+name into the permalink once and permanently, and `user-tags` belongs to another
+plugin — `user-tags-lib` is the slug the text domain was already named for. The
+library calls itself User Tags everywhere a slug is not involved.
+
+`readme.txt` gains an Installation section and a changelog that reaches the
+stable tag.
+
 ## 1.3.1
 
 A standalone copy now counts as standalone even when it lost a version tie.

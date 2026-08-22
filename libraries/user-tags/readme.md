@@ -149,7 +149,7 @@ bootstrap requires its files explicitly. Do not add this library to a `files` or
 
 ```sh
 git subtree add --prefix libraries/user-tags \
-    https://github.com/davefx/user-tags.git 1.1.0 --squash
+    https://github.com/davefx/user-tags.git 1.3.2 --squash
 ```
 
 A subtree rather than a composer dependency, because the code has to be inside
