@@ -4,7 +4,7 @@
  * Plugin URI: https://github.com/davefx/user-tags
  * Description: A label that behaves like a role to the whole of WordPress while granting no capability and never touching the autoloaded role option. A library for plugins to bundle, and a plugin in its own right.
  * Author: David Marín
- * Version: 1.3.2
+ * Version: 1.3.3
  * License: GPL-3.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: user-tags-lib
@@ -42,7 +42,7 @@
  * readme.md, "Lessons taken from Action Scheduler".
  *
  * @package UserTags
- * @version 1.3.2
+ * @version 1.3.3
  *
  * Copyright (C) 2026 David Marín
  *
@@ -63,4 +63,4 @@ defined( 'ABSPATH' ) || exit;
 
 require_once __DIR__ . '/src/Versions.php';
 
-UserTags_Versions::register( '1.3.2', __DIR__ . '/src/bootstrap.php', __FILE__ );
+UserTags_Versions::register( '1.3.3', __DIR__ . '/src/bootstrap.php', __FILE__ );

@@ -2,9 +2,9 @@
 Contributors: davefx
 Tags: users, roles, capabilities, segmentation, performance
 Requires at least: 5.9
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -100,6 +100,9 @@ Yes. Tags are per site.
 
 == Upgrade Notice ==
 
+= 1.3.3 =
+Packaging only. No change to how the library behaves.
+
 = 1.3.2 =
 Packaging only. No change to how the library behaves.
 
@@ -110,6 +113,16 @@ Fixes the screens vanishing when another plugin bundles an identical copy.
 Installed as a plugin, the screens now appear without a filter being set.
 
 == Changelog ==
+
+= 1.3.3 =
+* Clears the wordpress.org Plugin Check. The findings were annotations rather
+  than defects — `php://temp` is a memory stream, so WP_Filesystem has nothing
+  to say about it, and every handler on the tag screen runs after the
+  dispatcher's `check_admin_referer()`, which PHPCS cannot see across. The
+  export's `what` parameter is now unslashed and sanitised on the way in rather
+  than only compared against a literal.
+* `Tested up to: 7.1`. The directory treats a stale value as an error and hides
+  the plugin from search until it is current.
 
 = 1.3.2 =
 * Packaging for the wordpress.org directory: the plugin name is `User Tags Lib`,

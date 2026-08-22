@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.3.3
+
+Clears the wordpress.org Plugin Check, which the CI now runs against the tree
+`git archive` produces.
+
+The findings were annotations rather than defects. `php://temp` is a memory
+stream, so the sniff demanding WP_Filesystem was matching function names rather
+than destinations; every handler on the tag screen runs after the dispatcher's
+`check_admin_referer()`, which PHPCS cannot follow across the call; and the
+profile's submitted tags are sanitised per element by the loop that reads them.
+Each is now marked as such, with the reason.
+
+One real change: the export's `what` parameter is unslashed and sanitised on the
+way in, rather than only being compared against a literal.
+
+`Tested up to: 7.1` — the directory treats a stale value as an error and hides
+the plugin from search until it is current.
+
 ## 1.3.2
 
 Packaging for the wordpress.org directory. Nothing behaves differently.

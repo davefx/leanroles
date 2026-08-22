@@ -90,6 +90,9 @@ final class Profile {
 
 		check_admin_referer( self::NONCE, 'user_tags_profile_nonce' );
 
+		// Sanitised per element by the loop below: sanitize_key() on a value the
+		// catalogue then has to recognise before it is kept at all.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$submitted = isset( $_POST['user_tags'] ) ? (array) wp_unslash( $_POST['user_tags'] ) : array();
 		$slugs     = array();
 

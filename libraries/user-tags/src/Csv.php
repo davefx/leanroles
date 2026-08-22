@@ -222,6 +222,9 @@ final class Csv {
 	 * @param array[] $rows Rows.
 	 */
 	public static function to_string( array $rows ): string {
+		// php://temp is a memory stream, not a file. WP_Filesystem cannot open
+		// one and has no reason to: nothing here touches the disk.
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 		$handle = fopen( 'php://temp', 'r+' );
 
 		foreach ( $rows as $row ) {
@@ -230,7 +233,7 @@ final class Csv {
 
 		rewind( $handle );
 		$csv = stream_get_contents( $handle );
-		fclose( $handle );
+		fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 
 		return (string) $csv;
 	}
@@ -242,8 +245,11 @@ final class Csv {
 	 * @return array[]
 	 */
 	public static function from_string( string $csv ): array {
+		// A memory stream again — see to_string().
+		// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_fopen, WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
 		$handle = fopen( 'php://temp', 'r+' );
 		fwrite( $handle, $csv );
+		// phpcs:enable WordPress.WP.AlternativeFunctions.file_system_operations_fopen, WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
 		rewind( $handle );
 
 		$rows = array();
@@ -259,7 +265,7 @@ final class Csv {
 			$rows[] = $row;
 		}
 
-		fclose( $handle );
+		fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 
 		return $rows;
 	}

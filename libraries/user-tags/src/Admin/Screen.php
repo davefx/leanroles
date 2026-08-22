@@ -34,6 +34,14 @@ final class Screen {
 
 		check_admin_referer( self::NONCE );
 
+		/*
+		 * Everything below runs after check_admin_referer() above, and after the
+		 * capability check. PHPCS cannot see across the call into the handlers,
+		 * so each one reads $_POST as if unguarded; it is not. The disable is
+		 * lifted at the end of the class.
+		 */
+		// phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended
+
 		switch ( $action ) {
 			case 'create':
 				self::do_create();
@@ -121,11 +129,15 @@ final class Screen {
 	 * Import assignments from an uploaded CSV.
 	 */
 	private static function do_import(): void {
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		if ( empty( $_FILES['csv']['tmp_name'] ) || ! is_uploaded_file( $_FILES['csv']['tmp_name'] ) ) {
 			self::redirect( array( 'error' => __( 'No file was uploaded.', 'user-tags-lib' ) ) );
 		}
 
-		$csv = file_get_contents( $_FILES['csv']['tmp_name'] ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+		// The path is PHP's own, not the request's, and is_uploaded_file() above
+		// is what validates it — sanitising a temp path would only corrupt it.
+		// phpcs:ignore WordPress.WP.AlternativeFunctions, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$csv = file_get_contents( $_FILES['csv']['tmp_name'] );
 
 		if ( false === $csv ) {
 			self::redirect( array( 'error' => __( 'The uploaded file could not be read.', 'user-tags-lib' ) ) );
@@ -146,7 +158,7 @@ final class Screen {
 	 * Stream a CSV export.
 	 */
 	private static function do_export(): void {
-		$what = 'catalogue' === ( $_GET['what'] ?? '' ) ? 'catalogue' : 'assignments';
+		$what = 'catalogue' === sanitize_key( wp_unslash( $_GET['what'] ?? '' ) ) ? 'catalogue' : 'assignments';
 		$rows = 'catalogue' === $what ? Csv::export_catalogue() : Csv::export_assignments();
 
 		nocache_headers();
@@ -455,4 +467,6 @@ final class Screen {
 		submit_button( __( 'Import', 'user-tags-lib' ), 'secondary' );
 		echo '</form>';
 	}
+
+	// phpcs:enable WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended
 }
