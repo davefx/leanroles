@@ -4,7 +4,7 @@ Tags: roles, capabilities, performance, users, multisite
 Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.5.5
+Stable tag: 0.5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -105,6 +105,9 @@ Every test runs against a real WordPress install and a real database, because th
 
 == Upgrade Notice ==
 
+= 0.5.6 =
+The author link points at davefx.com. Nothing in the plugin changes.
+
 = 0.5.5 =
 The listing now links to the plugin's own page. Nothing in the plugin changes.
 
@@ -142,6 +145,10 @@ The tag screens moved to the bundled library and now live under Users → Tags r
 First release.
 
 == Changelog ==
+
+= 0.5.6 =
+
+The Author URI header pointed at a wordpress.org profile page. It points at davefx.com, which is where the other plugins under this name already point.
 
 = 0.5.5 =
 
