@@ -4,7 +4,7 @@
  * Plugin Name:       LeanRoles
  * Plugin URI:        https://davefx.com/en/wordpress-plugins/leanroles/
  * Description:       Measures what your role configuration costs on every request, and adds user tags — a zero-capability primitive that behaves like a role without weighing like one.
- * Version:           0.5.4
+ * Version:           0.5.5
  * Requires at least: 5.9
  * Requires PHP:      7.4
  * Author:            David Marín
@@ -47,7 +47,7 @@ defined( 'ABSPATH' ) || exit;
 if ( defined( 'LEANROLES_VERSION' ) ) {
     return;
 }
-define( 'LEANROLES_VERSION', '0.5.4' );
+define( 'LEANROLES_VERSION', '0.5.5' );
 define( 'LEANROLES_FILE', __FILE__ );
 define( 'LEANROLES_PATH', plugin_dir_path( __FILE__ ) );
 define( 'LEANROLES_URL', plugin_dir_url( __FILE__ ) );

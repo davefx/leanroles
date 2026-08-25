@@ -4,7 +4,7 @@ Tags: roles, capabilities, performance, users, multisite
 Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.5.4
+Stable tag: 0.5.5
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -44,6 +44,8 @@ Two further items are optional and stay off unless you tick them: the list of ot
 Activating a licence key sends the key and the site URL, so the licence can be checked and updates delivered to you.
 
 Freemius' [terms](https://freemius.com/terms/) and [privacy policy](https://freemius.com/privacy/) cover what they do with it.
+
+[What the paid plans cost, and what they add](https://davefx.com/en/wordpress-plugins/leanroles/)
 
 = What it does not do =
 
@@ -103,6 +105,9 @@ Every test runs against a real WordPress install and a real database, because th
 
 == Upgrade Notice ==
 
+= 0.5.5 =
+The listing now links to the plugin's own page. Nothing in the plugin changes.
+
 = 0.5.4 =
 The plugin's homepage link pointed at a source repository. It now points at the plugin's own page.
 
@@ -137,6 +142,10 @@ The tag screens moved to the bundled library and now live under Users → Tags r
 First release.
 
 == Changelog ==
+
+= 0.5.5 =
+
+A link, in the description, to the page that says what the paid plans cost. 0.5.4 pointed the Plugin URI header there, which was the right value for that header and does not put a link on this page — the directory does not render it. A line in the description does.
 
 = 0.5.4 =
 
