@@ -4,7 +4,7 @@ Tags: roles, capabilities, performance, users, multisite
 Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.5.2
+Stable tag: 0.5.3
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -36,10 +36,8 @@ LeanRoles uses [Freemius](https://freemius.com) for licensing, payment and autom
 If you do opt in, what is shared is:
 
 * your WordPress user's name and email address;
-* the site's homepage URL and title, its language, and the WordPress and PHP
-  versions;
-* which version of LeanRoles is running, its SDK version, and whether it is
-  active or has been uninstalled.
+* the site's homepage URL and title, its language, and the WordPress and PHP versions;
+* which version of LeanRoles is running, its SDK version, and whether it is active or has been uninstalled.
 
 Two further items are optional and stay off unless you tick them: the list of other plugins and themes installed on the site, and the newsletter.
 
@@ -105,6 +103,9 @@ Every test runs against a real WordPress install and a real database, because th
 
 == Upgrade Notice ==
 
+= 0.5.3 =
+The rest of the line breaks. 0.5.2 fixed the paragraphs and missed the lists.
+
 = 0.5.2 =
 The plugin listing was showing paragraphs broken mid-sentence. Presentation only; the plugin is unchanged.
 
@@ -133,6 +134,10 @@ The tag screens moved to the bundled library and now live under Users → Tags r
 First release.
 
 == Changelog ==
+
+= 0.5.3 =
+
+The other half of 0.5.2. Unwrapping the paragraphs left the bulleted lists wrapped, because their continuation lines are indented and the pass that fixed the paragraphs mistook that indentation for a code block. Thirteen breaks survived, all inside lists. There is now a test that reads this file and fails if any line continues the one above it, so the next one cannot reach the directory.
 
 = 0.5.2 =
 
@@ -186,8 +191,7 @@ The library is now 1.3.3, which also means: activated on its own it registers it
 
 = 0.2.0 =
 
-**The tag screens moved to the bundled library.** They now sit under
-**Users → Tags**, which is where an administrator looks for something that belongs to users, rather than under the LeanRoles menu. Behaviour is the same; the code is now shared.
+**The tag screens moved to the bundled library.** They now sit under **Users → Tags**, which is where an administrator looks for something that belongs to users, rather than under the LeanRoles menu. Behaviour is the same; the code is now shared.
 
 The library is [User Tags](https://github.com/davefx/user-tags), bundled in `libraries/user-tags/` and free for any plugin to adopt. LeanRoles asks it for the screens the same way any other consumer would:
 
@@ -204,23 +208,13 @@ First release.
 
 **The auditor.** Strictly read-only, so it can be left on a client site without asking anyone first. It measures rather than estimates:
 
-* Size of the role option taken with `LENGTH()` in the database, not by
-  re-serializing in PHP — the two produce different strings, and the difference
-  is exactly the sort of small dishonesty that gets a performance plugin
-  disbelieved.
-* A real `unserialize()` of your own option, timed on your own machine after a
-  warm-up pass.
-* Resident footprint measured with the result kept alive, and the ratio of
-  in-memory to on-disk bytes.
-* What that costs in concurrent PHP workers, and in object-cache bandwidth, from
-  inputs you can adjust.
-* Roles that grant no effective permission, roles nobody holds, roles with
-  identical capability sets, subset relationships, deprecated `level_N` entries,
-  and a conservative lower bound on what inheritance could remove.
-* Capabilities it cannot account for — reported as *unrecognised*, never as
-  *orphaned*, because custom code checks capabilities no scanner can see.
-* Detection of the `object-cache.php` drop-in, with the findings toned down when
-  the drop-in already compresses or shards the blob.
+* Size of the role option taken with `LENGTH()` in the database, not by re-serializing in PHP — the two produce different strings, and the difference is exactly the sort of small dishonesty that gets a performance plugin disbelieved.
+* A real `unserialize()` of your own option, timed on your own machine after a warm-up pass.
+* Resident footprint measured with the result kept alive, and the ratio of in-memory to on-disk bytes.
+* What that costs in concurrent PHP workers, and in object-cache bandwidth, from inputs you can adjust.
+* Roles that grant no effective permission, roles nobody holds, roles with identical capability sets, subset relationships, deprecated `level_N` entries, and a conservative lower bound on what inheritance could remove.
+* Capabilities it cannot account for — reported as *unrecognised*, never as *orphaned*, because custom code checks capabilities no scanner can see.
+* Detection of the `object-cache.php` drop-in, with the findings toned down when the drop-in already compresses or shards the blob.
 
 **User tags.** A label that behaves like a role to the whole of WordPress — it appears in `$user->roles`, answers `current_user_can()`, and `WP_User_Query` finds it — while granting no capability and never being written to the autoloaded role option. Create and edit tags, assign them individually or in bulk from the users list, filter by them, CSV import and export.
 
