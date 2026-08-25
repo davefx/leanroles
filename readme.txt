@@ -4,7 +4,7 @@ Tags: roles, capabilities, performance, users, multisite
 Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.5.3
+Stable tag: 0.5.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -103,6 +103,9 @@ Every test runs against a real WordPress install and a real database, because th
 
 == Upgrade Notice ==
 
+= 0.5.4 =
+The plugin's homepage link pointed at a source repository. It now points at the plugin's own page.
+
 = 0.5.3 =
 The rest of the line breaks. 0.5.2 fixed the paragraphs and missed the lists.
 
@@ -134,6 +137,10 @@ The tag screens moved to the bundled library and now live under Users → Tags r
 First release.
 
 == Changelog ==
+
+= 0.5.4 =
+
+The Plugin URI header — what this directory shows as the plugin's home page — pointed at a GitHub repository. That repository is generated: it holds the built plugin and is replaced wholesale on every release, so it was never a home page and is a stranger place to send somebody now than it was. It points at the plugin's own page instead.
 
 = 0.5.3 =
 
