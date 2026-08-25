@@ -42,17 +42,17 @@ final class Profile {
 		$editable = current_user_can( Admin::capability() ) && current_user_can( 'edit_user', $user->ID );
 		$current  = array_flip( Store::get_tags( (int) $user->ID ) );
 
-		echo '<h2>' . esc_html__( 'User tags', 'user-tags-lib' ) . '</h2>';
+		echo '<h2>' . esc_html__( 'User tags', 'leanroles' ) . '</h2>';
 
 		echo '<table class="form-table"><tbody><tr>';
-		echo '<th scope="row">' . esc_html__( 'Tags', 'user-tags-lib' ) . '</th><td>';
+		echo '<th scope="row">' . esc_html__( 'Tags', 'leanroles' ) . '</th><td>';
 
 		if ( $editable ) {
 			wp_nonce_field( self::NONCE, 'user_tags_profile_nonce', false );
 			echo '<input type="hidden" name="user_tags_submitted" value="1" />';
 		}
 
-		echo '<fieldset><legend class="screen-reader-text">' . esc_html__( 'User tags', 'user-tags-lib' ) . '</legend>';
+		echo '<fieldset><legend class="screen-reader-text">' . esc_html__( 'User tags', 'leanroles' ) . '</legend>';
 
 		foreach ( $terms as $term ) {
 			printf(
@@ -68,7 +68,7 @@ final class Profile {
 
 		printf(
 			'<p class="description">%s</p>',
-			esc_html__( 'Tags grant no capabilities. They are stored outside the role option, so adding one costs nothing on subsequent requests.', 'user-tags-lib' )
+			esc_html__( 'Tags grant no capabilities. They are stored outside the role option, so adding one costs nothing on subsequent requests.', 'leanroles' )
 		);
 
 		echo '</td></tr></tbody></table>';

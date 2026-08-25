@@ -192,7 +192,7 @@ final class Library {
 	 *
 	 * Two locations are tried, in WordPress's own order of precedence:
 	 *
-	 *   1. wp-content/languages/plugins/user-tags-lib-<locale>.mo — where the
+	 *   1. wp-content/languages/plugins/leanroles-<locale>.mo — where the
 	 *      wordpress.org translation platform puts files, and where a site owner
 	 *      puts an override. Checked first so either can win.
 	 *   2. The copy shipped inside this library.
@@ -207,7 +207,7 @@ final class Library {
 	 * @return void
 	 */
 	public static function load_textdomain(): void {
-		if ( is_textdomain_loaded( 'user-tags-lib' ) ) {
+		if ( is_textdomain_loaded( 'leanroles' ) ) {
 			return;
 		}
 
@@ -216,7 +216,7 @@ final class Library {
 		$candidates = array();
 
 		if ( defined( 'WP_LANG_DIR' ) ) {
-			$candidates[] = WP_LANG_DIR . '/plugins/user-tags-lib-' . $locale . '.mo';
+			$candidates[] = WP_LANG_DIR . '/plugins/leanroles-' . $locale . '.mo';
 		}
 
 		/**
@@ -227,10 +227,10 @@ final class Library {
 		 */
 		$bundled = apply_filters( 'user_tags_languages_dir', self::root() . '/languages', $locale );
 
-		$candidates[] = $bundled . '/user-tags-lib-' . $locale . '.mo';
+		$candidates[] = $bundled . '/leanroles-' . $locale . '.mo';
 
 		foreach ( $candidates as $mofile ) {
-			if ( is_readable( $mofile ) && load_textdomain( 'user-tags-lib', $mofile, $locale ) ) {
+			if ( is_readable( $mofile ) && load_textdomain( 'leanroles', $mofile, $locale ) ) {
 				return;
 			}
 		}

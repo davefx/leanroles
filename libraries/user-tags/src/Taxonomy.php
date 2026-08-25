@@ -40,8 +40,8 @@ final class Taxonomy {
 			'user',
 			array(
 				'labels'                => array(
-					'name'          => __( 'User tags', 'user-tags-lib' ),
-					'singular_name' => __( 'User tag', 'user-tags-lib' ),
+					'name'          => __( 'User tags', 'leanroles' ),
+					'singular_name' => __( 'User tag', 'leanroles' ),
 				),
 				'public'                => false,
 				'publicly_queryable'    => false,
@@ -91,7 +91,7 @@ final class Taxonomy {
 		$slug = sanitize_key( $slug );
 
 		if ( '' === $slug ) {
-			return new \WP_Error( 'user_tags_invalid_slug', __( 'A tag needs a slug.', 'user-tags-lib' ) );
+			return new \WP_Error( 'user_tags_invalid_slug', __( 'A tag needs a slug.', 'leanroles' ) );
 		}
 
 		$conflict = self::slug_conflict( $slug );
@@ -142,7 +142,7 @@ final class Taxonomy {
 	 */
 	public static function slug_conflict( string $slug ) {
 		if ( self::get_by_slug( $slug ) ) {
-			return new \WP_Error( 'user_tags_exists', __( 'A tag with that slug already exists.', 'user-tags-lib' ) );
+			return new \WP_Error( 'user_tags_exists', __( 'A tag with that slug already exists.', 'leanroles' ) );
 		}
 
 		if ( isset( Roles::stored_slugs()[ $slug ] ) ) {
@@ -150,7 +150,7 @@ final class Taxonomy {
 				'user_tags_role_exists',
 				sprintf(
 					/* translators: %s: role slug. */
-					__( '"%s" is already a real role. A tag cannot shadow one: choose another slug, or delete the role first.', 'user-tags-lib' ),
+					__( '"%s" is already a real role. A tag cannot shadow one: choose another slug, or delete the role first.', 'leanroles' ),
 					$slug
 				)
 			);
@@ -170,7 +170,7 @@ final class Taxonomy {
 		$term = self::get_by_slug( $slug );
 
 		if ( ! $term ) {
-			return new \WP_Error( 'user_tags_unknown_tag', __( 'That tag does not exist.', 'user-tags-lib' ) );
+			return new \WP_Error( 'user_tags_unknown_tag', __( 'That tag does not exist.', 'leanroles' ) );
 		}
 
 		$fields = array();
@@ -226,7 +226,7 @@ final class Taxonomy {
 		$term = self::get_by_slug( $slug );
 
 		if ( ! $term ) {
-			return new \WP_Error( 'user_tags_unknown_tag', __( 'That tag does not exist.', 'user-tags-lib' ) );
+			return new \WP_Error( 'user_tags_unknown_tag', __( 'That tag does not exist.', 'leanroles' ) );
 		}
 
 		$result = wp_delete_term( $term->term_id, self::NAME );

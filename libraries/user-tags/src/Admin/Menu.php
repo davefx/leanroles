@@ -31,8 +31,8 @@ final class Menu {
 	 */
 	public static function register(): void {
 		add_users_page(
-			__( 'User tags', 'user-tags-lib' ),
-			__( 'Tags', 'user-tags-lib' ),
+			__( 'User tags', 'leanroles' ),
+			__( 'Tags', 'leanroles' ),
 			Admin::capability(),
 			self::SLUG,
 			array( Screen::class, 'render' )

@@ -417,8 +417,9 @@ class TagCommand {
 	 *   - catalogue
 	 * ---
 	 *
-	 * [--file=<path>]
-	 * : Write here instead of to stdout.
+	 * ## EXAMPLES
+	 *
+	 *     $ wp leanroles tag export --what=catalogue > catalogue.csv
 	 *
 	 * @subcommand export
 	 *
@@ -429,26 +430,15 @@ class TagCommand {
 		$what = Utils\get_flag_value( $assoc_args, 'what', 'assignments' );
 		$rows = 'catalogue' === $what ? Csv::export_catalogue() : Csv::export_assignments();
 		$csv  = Csv::to_string( $rows );
-		$file = Utils\get_flag_value( $assoc_args, 'file', '' );
 
-		if ( ! $file ) {
-			WP_CLI::line( rtrim( $csv, "\n" ) );
-			return;
-		}
-
-		$directory = dirname( $file );
-
-		if ( ! is_dir( $directory ) || ! wp_is_writable( $directory ) ) {
-			WP_CLI::error( sprintf( 'Could not write to %s: the directory is not writable.', $file ) );
-		}
-
-		// Silenced deliberately: a failed write is reported as a clean CLI
-		// error, not as a raw PHP warning halfway through the output.
-		if ( false === @file_put_contents( $file, $csv ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions, WordPress.PHP.NoSilencedErrors.Discouraged
-			WP_CLI::error( sprintf( 'Could not write to %s.', $file ) );
-		}
-
-		WP_CLI::success( sprintf( 'Wrote %d row(s) to %s.', count( $rows ) - 1, $file ) );
+		/*
+		 * Standard output, and only standard output. There was a --file option;
+		 * it wrote wherever it was pointed, which is ordinary for a command line
+		 * tool and is nevertheless the one thing the plugin directory does not
+		 * want a plugin doing. `>` is the same feature and belongs to the shell,
+		 * so the plugin now writes to the filesystem nowhere at all.
+		 */
+		WP_CLI::line( rtrim( $csv, "\n" ) );
 	}
 
 	/**

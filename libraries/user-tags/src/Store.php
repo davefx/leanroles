@@ -123,7 +123,7 @@ final class Store {
 		}
 
 		if ( ! get_userdata( $user_id ) ) {
-			return new \WP_Error( 'user_tags_unknown_user', __( 'That user does not exist.', 'user-tags-lib' ) );
+			return new \WP_Error( 'user_tags_unknown_user', __( 'That user does not exist.', 'leanroles' ) );
 		}
 
 		$catalogue = Catalogue::all();

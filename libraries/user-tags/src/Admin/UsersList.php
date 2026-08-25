@@ -50,16 +50,16 @@ final class UsersList {
 		if ( 'nothing' === $outcome ) {
 			printf(
 				'<div class="notice notice-warning is-dismissible"><p>%s</p></div>',
-				esc_html__( 'Pick a tag and at least one user first.', 'user-tags-lib' )
+				esc_html__( 'Pick a tag and at least one user first.', 'leanroles' )
 			);
 			return;
 		}
 
 		$text = 'removed' === $outcome
 			/* translators: 1: number of users, 2: tag slug. */
-			? __( 'Removed "%2$s" from %1$d user(s).', 'user-tags-lib' )
+			? __( 'Removed "%2$s" from %1$d user(s).', 'leanroles' )
 			/* translators: 1: number of users, 2: tag slug. */
-			: __( 'Tagged %1$d user(s) with "%2$s".', 'user-tags-lib' );
+			: __( 'Tagged %1$d user(s) with "%2$s".', 'leanroles' );
 
 		printf(
 			'<div class="notice notice-success is-dismissible"><p>%s</p></div>',
@@ -84,12 +84,12 @@ final class UsersList {
 			$out[ $key ] = $label;
 
 			if ( 'role' === $key ) {
-				$out['user_tags'] = __( 'Tags', 'user-tags-lib' );
+				$out['user_tags'] = __( 'Tags', 'leanroles' );
 			}
 		}
 
 		if ( ! isset( $out['user_tags'] ) ) {
-			$out['user_tags'] = __( 'Tags', 'user-tags-lib' );
+			$out['user_tags'] = __( 'Tags', 'leanroles' );
 		}
 
 		return $out;
@@ -184,9 +184,9 @@ final class UsersList {
 
 		wp_nonce_field( self::NONCE, 'user_tags_bulk_nonce', false );
 
-		echo '<label class="screen-reader-text" for="user-tags-bulk-tag">' . esc_html__( 'Tag', 'user-tags-lib' ) . '</label>';
+		echo '<label class="screen-reader-text" for="user-tags-bulk-tag">' . esc_html__( 'Tag', 'leanroles' ) . '</label>';
 		echo '<select name="user_tags_bulk_tag" id="user-tags-bulk-tag">';
-		echo '<option value="">' . esc_html__( 'Tag…', 'user-tags-lib' ) . '</option>';
+		echo '<option value="">' . esc_html__( 'Tag…', 'leanroles' ) . '</option>';
 
 		foreach ( $terms as $term ) {
 			printf(
@@ -198,8 +198,8 @@ final class UsersList {
 
 		echo '</select>';
 
-		submit_button( __( 'Add tag', 'user-tags-lib' ), '', 'user_tags_bulk_add', false );
-		submit_button( __( 'Remove tag', 'user-tags-lib' ), '', 'user_tags_bulk_remove', false );
+		submit_button( __( 'Add tag', 'leanroles' ), '', 'user_tags_bulk_add', false );
+		submit_button( __( 'Remove tag', 'leanroles' ), '', 'user_tags_bulk_remove', false );
 	}
 
 	/**
@@ -211,7 +211,7 @@ final class UsersList {
 		}
 
 		if ( ! current_user_can( Admin::capability() ) ) {
-			wp_die( esc_html__( 'You do not have permission to tag users.', 'user-tags-lib' ) );
+			wp_die( esc_html__( 'You do not have permission to tag users.', 'leanroles' ) );
 		}
 
 		check_admin_referer( self::NONCE, 'user_tags_bulk_nonce' );

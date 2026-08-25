@@ -179,6 +179,201 @@ final class Roles {
 	}
 
 	/**
+	 * Change a role's display name, or what it grants.
+	 *
+	 * The primitive the free tier was missing. §4.2 of the product plan is
+	 * emphatic about why it belongs there: a plugin that diagnoses and lets you
+	 * touch nothing reads as crippled, and the directory punishes that without
+	 * appeal.
+	 *
+	 * Command line only, deliberately. The product is an auditor; a screen of
+	 * capability checkboxes would anchor it in a market priced at a third of
+	 * this one. So the capability exists and the screen does not.
+	 *
+	 * A restore point is taken first, exactly as deletion does. Editing a role
+	 * is the other way to lose a configuration by accident.
+	 *
+	 * @param string             $slug   Role to change.
+	 * @param string|null        $name   New display name, or null to leave it.
+	 * @param array<string,bool> $caps   Capabilities to set; true grants, false
+	 *                                   denies. Absent keys are left alone.
+	 * @param string[]           $remove Capability names to drop entirely.
+	 * @return array{name:string,granted:int,denied:int}|\WP_Error
+	 */
+	public static function update_role( string $slug, ?string $name = null, array $caps = array(), array $remove = array() ) {
+		$roles = self::stored_roles();
+
+		if ( ! isset( $roles[ $slug ] ) ) {
+			return new \WP_Error( 'leanroles_unknown_role', __( 'That role does not exist.', 'leanroles' ) );
+		}
+
+		/*
+		 * Administrator is protected from editing as well as deletion, and the
+		 * failure mode is worse here: removing a capability from it can lock out
+		 * the only account that could put it back.
+		 */
+		$protected = (array) apply_filters( 'leanroles_protected_roles', array( 'administrator' ) );
+
+		if ( in_array( $slug, $protected, true ) ) {
+			return new \WP_Error(
+				'leanroles_protected_role',
+				sprintf(
+					/* translators: %s: role slug. */
+					__( 'The role "%s" is protected and cannot be edited.', 'leanroles' ),
+					$slug
+				)
+			);
+		}
+
+		if ( null === $name && ! $caps && ! $remove ) {
+			return new \WP_Error( 'leanroles_nothing_to_do', __( 'Nothing to change.', 'leanroles' ) );
+		}
+
+		self::create_backup( 'update_role:' . $slug );
+
+		$role         = $roles[ $slug ];
+		$capabilities = isset( $role['capabilities'] ) && is_array( $role['capabilities'] ) ? $role['capabilities'] : array();
+
+		if ( null !== $name && '' !== $name ) {
+			$role['name'] = $name;
+		}
+
+		foreach ( $caps as $cap => $granted ) {
+			$capabilities[ $cap ] = (bool) $granted;
+		}
+
+		foreach ( $remove as $cap ) {
+			unset( $capabilities[ $cap ] );
+		}
+
+		$role['capabilities'] = $capabilities;
+		$roles[ $slug ]       = $role;
+
+		update_option( self::option_name(), $roles );
+		unset( $GLOBALS['wp_roles'] );
+
+		$granted = count( array_filter( $capabilities ) );
+
+		return array(
+			'name'    => (string) $role['name'],
+			'granted' => $granted,
+			'denied'  => count( $capabilities ) - $granted,
+		);
+	}
+
+	/**
+	 * The stored role configuration, in a form that survives a trip through a
+	 * file and into another site.
+	 *
+	 * Not the same thing as a restore point. A backup is a snapshot of this site
+	 * meant to come back to this site; an export is meant to leave. So it says
+	 * where it came from and when, which is what lets a receiving site refuse
+	 * sensibly, and carries none of the internals a restore relies on.
+	 *
+	 * @return array{generated:string,site:string,option:string,roles:array}
+	 */
+	public static function export_roles(): array {
+		return array(
+			'generated' => gmdate( 'c' ),
+			'site'      => home_url(),
+			'option'    => self::option_name(),
+			'roles'     => self::stored_roles(),
+		);
+	}
+
+	/**
+	 * Apply an exported configuration.
+	 *
+	 * Merge adds and overwrites the roles the file names and leaves the rest of
+	 * the site alone. Replace makes the site's roles exactly the file's, which is
+	 * the dangerous one and is why a restore point is taken first.
+	 *
+	 * Protected roles are never touched in either mode: importing a file that
+	 * omits `administrator` must not be a way to delete it.
+	 *
+	 * @param array  $payload Decoded export.
+	 * @param string $mode    'merge' or 'replace'.
+	 * @param bool   $dry_run Work the change out and apply nothing.
+	 * @return array{added:string[],changed:string[],removed:string[],kept:string[]}|\WP_Error
+	 */
+	public static function import_roles( array $payload, string $mode = 'merge', bool $dry_run = false ) {
+		if ( empty( $payload['roles'] ) || ! is_array( $payload['roles'] ) ) {
+			return new \WP_Error( 'leanroles_bad_export', __( 'That file carries no roles.', 'leanroles' ) );
+		}
+
+		if ( ! in_array( $mode, array( 'merge', 'replace' ), true ) ) {
+			return new \WP_Error( 'leanroles_bad_mode', __( 'Mode must be merge or replace.', 'leanroles' ) );
+		}
+
+		$incoming  = $payload['roles'];
+		$current   = self::stored_roles();
+		$protected = (array) apply_filters( 'leanroles_protected_roles', array( 'administrator' ) );
+
+		$added   = array();
+		$changed = array();
+		$removed = array();
+		$kept    = array();
+
+		foreach ( $incoming as $slug => $role ) {
+			if ( ! is_array( $role ) || ! isset( $role['capabilities'] ) || ! is_array( $role['capabilities'] ) ) {
+				return new \WP_Error(
+					'leanroles_bad_export',
+					sprintf(
+						/* translators: %s: role slug. */
+						__( 'The role "%s" in that file has no capabilities array.', 'leanroles' ),
+						$slug
+					)
+				);
+			}
+
+			if ( in_array( $slug, $protected, true ) ) {
+				$kept[] = $slug;
+			} elseif ( ! isset( $current[ $slug ] ) ) {
+				$added[] = $slug;
+			} elseif ( $current[ $slug ] !== $role ) {
+				$changed[] = $slug;
+			}
+		}
+
+		if ( 'replace' === $mode ) {
+			foreach ( array_keys( $current ) as $slug ) {
+				if ( ! isset( $incoming[ $slug ] ) && ! in_array( $slug, $protected, true ) ) {
+					$removed[] = $slug;
+				}
+			}
+		}
+
+		if ( $dry_run ) {
+			return compact( 'added', 'changed', 'removed', 'kept' );
+		}
+
+		self::create_backup( 'import_roles:' . $mode );
+
+		$result = array();
+
+		if ( 'replace' === $mode ) {
+			foreach ( $protected as $slug ) {
+				if ( isset( $current[ $slug ] ) ) {
+					$result[ $slug ] = $current[ $slug ];
+				}
+			}
+		} else {
+			$result = $current;
+		}
+
+		foreach ( $incoming as $slug => $role ) {
+			if ( ! in_array( $slug, $protected, true ) ) {
+				$result[ $slug ] = $role;
+			}
+		}
+
+		update_option( self::option_name(), $result );
+		unset( $GLOBALS['wp_roles'] );
+
+		return compact( 'added', 'changed', 'removed', 'kept' );
+	}
+
+	/**
 	 * Delete a role, moving its users to another role.
 	 *
 	 * This is a primitive, not a conversion: it does not analyse what those

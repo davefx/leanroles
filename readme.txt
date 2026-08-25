@@ -4,7 +4,7 @@ Tags: roles, capabilities, performance, users, multisite
 Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.2.2
+Stable tag: 0.5.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -25,7 +25,34 @@ LeanRoles does two things about it.
 * The auditor, with real measurements and `wp leanroles audit --format=json`
 * User tags: create, assign individually or in bulk, filter, a users-list column, CSV import and export
 * The tag engine as a standalone library, `libraries/user-tags/`, that any plugin can bundle so tags cost them nothing to adopt
-* WP-CLI: create a tag, assign it in bulk by role, delete a role with reassignment, take and restore role-option backups
+* WP-CLI: create a tag, assign it in bulk by role, edit or delete a role with reassignment, move a role configuration between sites, take and restore role-option backups
+
+= Licensing, and the one external service =
+
+LeanRoles uses [Freemius](https://freemius.com) for licensing, payment and
+automatic updates on its paid plan. Freemius is a third-party service, and this
+is the only thing in the plugin that talks to anything outside your site.
+
+**Nothing is sent anywhere unless you say so.** The plugin asks once, on
+activation, and skipping is a real option: skip it and the plugin works exactly
+as it does otherwise. Nothing about the auditor or user tags depends on it.
+
+If you do opt in, what is shared is:
+
+* your WordPress user's name and email address;
+* the site's homepage URL and title, its language, and the WordPress and PHP
+  versions;
+* which version of LeanRoles is running, its SDK version, and whether it is
+  active or has been uninstalled.
+
+Two further items are optional and stay off unless you tick them: the list of
+other plugins and themes installed on the site, and the newsletter.
+
+Activating a licence key sends the key and the site URL, so the licence can be
+checked and updates delivered to you.
+
+Freemius' [terms](https://freemius.com/terms/) and
+[privacy policy](https://freemius.com/privacy/) cover what they do with it.
 
 = What it does not do =
 
@@ -105,6 +132,24 @@ past, how `WP_User_Query` builds a role clause. See `tests/README.md`.
 
 == Upgrade Notice ==
 
+= 0.5.1 =
+A long bulk run that stopped making progress would repeat for ever instead of
+stopping. It now gives up and says where, and the run stays resumable. Paid
+plans only; nothing else changes.
+
+= 0.5.0 =
+`wp leanroles tag export` and `wp leanroles role export` no longer take
+`--file`; both print to standard output, so redirect them instead. Translations
+now come from translate.wordpress.org rather than being bundled.
+
+= 0.4.0 =
+Adds editing a role and moving a role configuration between sites, both from
+WP-CLI. Spanish translation brought up to date.
+
+= 0.3.0 =
+Adds licensing through Freemius for the paid plan. It asks before sending
+anything, and skipping leaves the plugin fully working.
+
 = 0.2.2 =
 Housekeeping in what the archive contains. No functional change.
 
@@ -119,6 +164,70 @@ rather than under the LeanRoles menu. Spanish translation added.
 First release.
 
 == Changelog ==
+
+= 0.5.1 =
+
+`wp leanroles bulk` could not stop. It ran passes until one reported itself
+finished, and if a pass ever stopped making progress there was nothing to end
+the loop — a command that never returns, or a cron worker pinned until the host
+kills it. It now abandons the run when a pass moves nobody, says which user it
+stopped at, and leaves the run resumable rather than undoing what it had done.
+
+This affects the paid plans only. Nothing in this build changes.
+
+= 0.5.0 =
+
+`wp leanroles tag export` and `wp leanroles role export` no longer take
+`--file`. Both print to standard output, so redirect them where you want
+them: `wp leanroles role export > roles.json`. The plugin now writes to the
+filesystem nowhere at all.
+
+Every string the plugin ships, including those in the bundled User Tags
+library, now uses one text domain, so all of them can be translated through
+translate.wordpress.org. Compiled translations are no longer bundled — the
+directory serves those, and community translations reach you the moment
+they are approved rather than the next time this plugin is released.
+
+= 0.4.0 =
+
+**Two primitives the free tier was missing.**
+
+`wp leanroles role update` changes a role's display name and what it grants.
+Command line only, and that is the product decision rather than an omission: a
+screen of capability checkboxes would put this in the category of role editors,
+and this is an auditor. It keeps three things apart that are easy to conflate —
+granting a capability, denying one, and dropping it altogether — because a denied
+capability still occupies a row in the option, which is the thing being measured.
+
+`wp leanroles role export` and `import` move a configuration between sites. Not
+the same as a restore point: a backup comes back to the site it came from, an
+export leaves, so it records where it came from and when. Protected roles are
+never touched in either direction, so a file that simply omits `administrator`
+cannot be a way to delete it.
+
+**Spanish is complete again.** The catalogue had fallen behind the code by about
+a third.
+
+= 0.3.0 =
+
+**Licensing, through Freemius.** The SDK ships in `libraries/freemius/` and
+handles the paid plan, licence activation and automatic updates.
+
+It is the only part of the plugin that contacts anything outside your site, and
+it asks first. The opt-in on activation is skippable, and skipping costs you
+nothing: the auditor and user tags neither know nor care. What is shared if you
+do opt in, and what stays optional, is set out under *Licensing, and the one
+external service* above.
+
+The SDK is required explicitly rather than autoloaded, for the same reason as the
+User Tags library: Freemius also arbitrates between every copy installed on a
+site and boots the newest, and an autoloader binding a class to a copy other
+than the one that won is the failure that pattern exists to avoid.
+
+The plugin's test suite now loads it the way WordPress does, from inside
+`wp-content/plugins`. Loaded from anywhere else the SDK cannot find the plugin's
+main file, resolves it to the plugins directory, and warns on every read of the
+plugin headers.
 
 = 0.2.2 =
 
