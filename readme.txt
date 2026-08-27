@@ -4,7 +4,7 @@ Tags: roles, capabilities, performance, users, multisite
 Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.5.6
+Stable tag: 0.6.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -145,6 +145,14 @@ The tag screens moved to the bundled library and now live under Users → Tags r
 First release.
 
 == Changelog ==
+
+= 0.6.0 =
+
+Five screens in wp-admin for what the paid plans do: converting a role to a tag, giving a role a parent, bulk tagging, the report with its thirty-day drift, and drift alerts. All of it already existed and all of it was reachable only from WP-CLI — a reasonable interface for somebody who lives in a terminal, and no interface at all for everybody else.
+
+The screens decide nothing themselves. They call what the commands call, so a screen and a terminal cannot disagree about the same site. Two things they do differently on purpose: the code scan that reads every PHP file under wp-content runs when it is asked for rather than on page load, and a bulk run advances one batch per click rather than pretending a web request can walk fifty thousand users.
+
+This affects the paid plans only. Nothing in this build changes.
 
 = 0.5.6 =
 
