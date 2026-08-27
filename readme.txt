@@ -4,7 +4,7 @@ Tags: roles, capabilities, performance, users, multisite
 Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.6.0
+Stable tag: 0.6.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -145,6 +145,12 @@ The tag screens moved to the bundled library and now live under Users → Tags r
 First release.
 
 == Changelog ==
+
+= 0.6.1 =
+
+The report screen named the filter that puts an agency's own name on a report and left it at that, which makes a feature only its author can use. It now carries the whole recipe — the call to paste into a mu-plugin, and a table of where each of the three keys comes out. Writing that table down turned up a key that was carried everywhere and rendered nowhere; it is rendered now, and the one output that cannot show an image says so instead of pretending.
+
+This affects the paid plans only. Nothing in this build changes.
 
 = 0.6.0 =
 
