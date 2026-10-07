@@ -4,7 +4,7 @@ Tags: user roles, capabilities, user tags, user management, multisite
 Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.6.2
+Stable tag: 0.6.3
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -105,7 +105,7 @@ Every test runs against a real WordPress install and a real database, because th
 
 == Upgrade Notice ==
 
-= 0.6.2 =
+= 0.6.3 =
 Security update of the bundled Freemius SDK. Nothing in LeanRoles itself changes.
 
 = 0.5.6 =
@@ -148,6 +148,10 @@ The tag screens moved to the bundled library and now live under Users → Tags r
 First release.
 
 == Changelog ==
+
+= 0.6.3 =
+
+The 0.6.2 package delivered to paid sites carried a stray directory, a copy of this plugin's own public files left over from publishing it, which did nothing but take up space. 0.6.3 is 0.6.2 without it, and the build now refuses to package any file the source does not track. The plugin directory never received 0.6.2, so here this is simply the Freemius SDK security update below.
 
 = 0.6.2 =
 
