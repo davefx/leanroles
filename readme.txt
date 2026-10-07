@@ -1,14 +1,14 @@
-=== LeanRoles ===
+=== LeanRoles – User Tags & Role Performance Audit ===
 Contributors: davefx
-Tags: roles, capabilities, performance, users, multisite
+Tags: user roles, capabilities, user tags, user management, multisite
 Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.6.1
+Stable tag: 0.6.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Measures what your role configuration costs on every request, and adds user tags: a role-shaped label that grants nothing and weighs nothing.
+Audits what your user roles cost on every request, and adds user tags: label users without creating roles that grant nothing and weigh nothing.
 
 == Description ==
 
@@ -105,6 +105,9 @@ Every test runs against a real WordPress install and a real database, because th
 
 == Upgrade Notice ==
 
+= 0.6.2 =
+Security update of the bundled Freemius SDK. Nothing in LeanRoles itself changes.
+
 = 0.5.6 =
 The author link points at davefx.com. Nothing in the plugin changes.
 
@@ -145,6 +148,10 @@ The tag screens moved to the bundled library and now live under Users → Tags r
 First release.
 
 == Changelog ==
+
+= 0.6.2 =
+
+The bundled Freemius SDK goes from 2.13.4 to 2.13.5, a security release: error messages, emails and URLs in its admin notices are escaped, a notice that built HTML out of the address bar is gone, only an administrator can opt a site in, and the pricing page no longer lets the query string override the plugin's own data. Nothing in LeanRoles itself changes.
 
 = 0.6.1 =
 
