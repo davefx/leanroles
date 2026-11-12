@@ -40,11 +40,11 @@ class AuditCommand {
 	 * [--fields=<fields>]
 	 * : Restrict the summary to these fields.
 	 *
-	 * [--no-benchmark]
-	 * : Skip the unserialize and memory measurements.
+	 * [--[no-]benchmark]
+	 * : Run the unserialize and memory measurements. On by default; --no-benchmark skips them.
 	 *
-	 * [--no-user-counts]
-	 * : Skip count_users(), which is the slow part on a large site.
+	 * [--[no-]user-counts]
+	 * : Count users per role. On by default; --no-user-counts skips count_users(), which is the slow part on a large site.
 	 *
 	 * [--roles]
 	 * : List every role with its capability counts instead of the summary.
@@ -94,8 +94,8 @@ class AuditCommand {
 
 		$report = Auditor::run(
 			array(
-				'benchmark'        => ! Utils\get_flag_value( $assoc_args, 'no-benchmark', false ),
-				'user_counts'      => ! Utils\get_flag_value( $assoc_args, 'no-user-counts', false ),
+				'benchmark'        => (bool) Utils\get_flag_value( $assoc_args, 'benchmark', true ),
+				'user_counts'      => (bool) Utils\get_flag_value( $assoc_args, 'user-counts', true ),
 				'requests_per_sec' => (int) Utils\get_flag_value( $assoc_args, 'requests-per-sec', 20 ),
 				'server_ram_mb'    => (int) Utils\get_flag_value( $assoc_args, 'server-ram-mb', 4096 ),
 				'worker_rss_mb'    => (int) Utils\get_flag_value( $assoc_args, 'worker-rss-mb', 60 ),

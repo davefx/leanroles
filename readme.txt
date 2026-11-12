@@ -4,7 +4,7 @@ Tags: user roles, capabilities, user tags, user management, multisite
 Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.6.3
+Stable tag: 0.6.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -105,6 +105,9 @@ Every test runs against a real WordPress install and a real database, because th
 
 == Upgrade Notice ==
 
+= 0.6.4 =
+`wp leanroles audit --no-user-counts` and `--no-benchmark` work again.
+
 = 0.6.3 =
 Security update of the bundled Freemius SDK. Nothing in LeanRoles itself changes.
 
@@ -148,6 +151,12 @@ The tag screens moved to the bundled library and now live under Users → Tags r
 First release.
 
 == Changelog ==
+
+= 0.6.4 =
+
+`wp leanroles audit --no-user-counts` and `--no-benchmark` failed with "unknown parameter" on every site. WP-CLI reads `--no-something` as `something` switched off, so an option declared under its negative name can never be given; both are declared the way WP-CLI expects now, and the tests run the arguments through WP-CLI's own parser instead of handing the command an array, which is how this went unnoticed. The paid report's `--no-drift` had the same fault and the same fix.
+
+On the paid plans, the conversion scan is quieter and more right. Taking a role from one user (`$user->remove_role()`) is no longer reported as deleting the role: after a conversion that call removes the tag, which is what the code meant. And the two review rules for direct database access now need the role's name nearby, rather than anywhere in the file, so a role called `lifetime` is no longer reported against every query in a file that mentions lifetime earnings.
 
 = 0.6.3 =
 
