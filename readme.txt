@@ -4,7 +4,7 @@ Tags: user roles, capabilities, user tags, user management, multisite
 Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.6.4
+Stable tag: 0.6.5
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -105,6 +105,9 @@ Every test runs against a real WordPress install and a real database, because th
 
 == Upgrade Notice ==
 
+= 0.6.5 =
+On the paid plans, converting a role with more than ten thousand holders works.
+
 = 0.6.4 =
 `wp leanroles audit --no-user-counts` and `--no-benchmark` work again.
 
@@ -151,6 +154,12 @@ The tag screens moved to the bundled library and now live under Users → Tags r
 First release.
 
 == Changelog ==
+
+= 0.6.5 =
+
+On the paid plans, converting a role with more than ten thousand holders refused with "too many holders to check", so the large membership tiers that most needed it were the ones it could never touch. The safety check now asks one holder per situation, meaning each distinct combination of roles and personal capabilities, since that is all that decides what anybody would lose. A site has a few dozen of those, not seventy thousand. The conversion screen also names the holder who would lose something, and what they would lose. Before, it said only "a holder would lose: capabilities".
+
+Nothing in the free plugin changes.
 
 = 0.6.4 =
 
