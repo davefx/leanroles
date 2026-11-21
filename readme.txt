@@ -4,7 +4,7 @@ Tags: user roles, capabilities, user tags, user management, multisite
 Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.6.5
+Stable tag: 0.7.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -27,21 +27,29 @@ LeanRoles does two things about it.
 * The tag engine as a standalone library, `libraries/user-tags/`, that any plugin can bundle so tags cost them nothing to adopt
 * WP-CLI: create a tag, assign it in bulk by role, edit or delete a role with reassignment, move a role configuration between sites, take and restore role-option backups
 
-= Licensing, and the one external service =
+= Licensing =
 
-LeanRoles uses [Freemius](https://freemius.com) for licensing, payment and automatic updates on its paid plan. Freemius is a third-party service, and this is the only thing in the plugin that talks to anything outside your site.
+LeanRoles uses [Freemius](https://freemius.com) for licensing, payment and automatic updates on its paid plan. Freemius is a third-party service. It is one of the two external services the plugin uses, both listed under *External services* below.
 
-**Nothing is sent anywhere unless you say so.** The plugin asks once, on activation, and skipping is a real option: skip it and the plugin works exactly as it does otherwise. Nothing about the auditor or user tags depends on it.
+**Nothing is sent anywhere unless you say so**: by opting in, by activating a licence, or by submitting the deactivation survey described below. The plugin asks to opt in once, on activation, and skipping is a real option: skip it and the plugin works exactly as it does otherwise. Nothing about the auditor or user tags depends on it.
 
 If you do opt in, what is shared is:
 
 * your WordPress user's name and email address;
 * the site's homepage URL and title, its language, and the WordPress and PHP versions;
-* which version of LeanRoles is running, its SDK version, and whether it is active or has been uninstalled.
+* which version of LeanRoles is running, its SDK version, and whether it is active, deactivated or uninstalled;
+* the list of other plugins and themes installed on the site (names, slugs, versions, and whether each is active). This one is a separate, optional permission on the opt-in screen. In the free version it comes ticked, so untick it if you do not want it sent. When you activate a licence it starts unticked.
 
-Two further items are optional and stay off unless you tick them: the list of other plugins and themes installed on the site, and the newsletter.
+No newsletter subscription is requested.
 
 Activating a licence key sends the key and the site URL, so the licence can be checked and updates delivered to you.
+
+**The deactivation survey.** Deactivating the plugin shows a short "why are you leaving?" survey. Your answer is stored on the site and sent only when the plugin is deleted:
+
+* If you skip the survey, nothing is sent.
+* If you never opted in and tick "Anonymous feedback", only the reason you chose, up to 128 characters of any text you typed, and an anonymous site identifier are sent.
+* If you never opted in and submit it *without* ticking that box, the plugin opts you in at that moment and sends everything listed above for opting in, along with your answer.
+* If you had opted in, your answer goes along with the uninstall notice.
 
 Freemius' [terms](https://freemius.com/terms/) and [privacy policy](https://freemius.com/privacy/) cover what they do with it.
 
@@ -52,6 +60,13 @@ Freemius' [terms](https://freemius.com/terms/) and [privacy policy](https://free
 It does not convert roles into tags for you. What it gives you are three independent primitives — create a tag, assign it in bulk, delete a role with reassignment — which compose into a conversion done by hand, by someone who has read the audit and accepts the risk.
 
 Before deleting a role it tells you how many capabilities that role grants and how many users hold it. It does not tell you which of those users will actually notice the difference: answering that means computing effective capabilities per user, before and after, and the plugin does not do it. Take a backup and check for yourself.
+
+== External services ==
+
+LeanRoles works without any external service. Two are used, and only when somebody asks for them:
+
+* **Freemius**, for licensing and the paid plans. It is contacted only if you opt in on activation, activate a licence, or answer the deactivation survey and later delete the plugin. What it receives in each case is set out under *Licensing* above. [Terms](https://freemius.com/terms/), [privacy policy](https://freemius.com/privacy/).
+* **The "More plugins" tab of the audit screen** lists the author's other plugins. When an administrator opens that tab, the plugin downloads the list from `https://davefx.com/plugins.json`, at most once a week (every twelve hours while it cannot be reached, showing a copy bundled with the plugin meanwhile). Nothing about the site's users or its roles is sent, and the request does not name the site: it identifies itself only as the library that makes it. As with any web request, davefx.com's server receives the IP address of the server making it. Nothing is downloaded until the tab is opened. [Privacy policy](https://davefx.com/en/privacy-policy/).
 
 == Installation ==
 
@@ -67,7 +82,7 @@ Before deleting a role it tells you how many capabilities that role grants and h
 
 = Is the auditor safe to run on a production site? =
 
-Yes, and that is the point of it. It reads. The only things it writes are a twelve-hour cache of `count_users()` and, on activation, a restore point of your role option.
+Yes, and that is the point of it. It reads. The only things it writes are a twelve-hour cache of `count_users()`, on activation a restore point of your role option, and, if you open the "More plugins" tab, a week's cache of that list.
 
 = What happens to my tags if I deactivate the plugin? =
 
@@ -104,6 +119,9 @@ The distributed plugin has no dependencies and no build step: what is in `src/` 
 Every test runs against a real WordPress install and a real database, because the risky parts of this plugin are all seams it does not own — the short-circuit contract of the metadata filters, what `WP_User::set_role()` does on its way past, how `WP_User_Query` builds a role clause. See `tests/README.md`.
 
 == Upgrade Notice ==
+
+= 0.7.0 =
+A "More plugins" tab on the audit screen, and a fuller account of what Freemius receives.
 
 = 0.6.5 =
 On the paid plans, converting a role with more than ten thousand holders works.
@@ -154,6 +172,16 @@ The tag screens moved to the bundled library and now live under Users → Tags r
 First release.
 
 == Changelog ==
+
+= 0.7.0 =
+
+The audit screen has a second tab, "More plugins", listing the author's other plugins. It adds no menu entry, notice or banner. The list is downloaded from davefx.com only when an administrator opens the tab, at most once a week. The request does not name the site, and opening the tab does not run the audit. The *External services* section of this readme says exactly what is fetched and when.
+
+That section is new. Writing it showed that the part about Freemius was wrong in two places and missing a third:
+
+* The list of installed plugins and themes is on by default in the free version's opt-in. It is optional and can be unticked, but it was described as off.
+* No newsletter is offered at all. It was described as optional.
+* The deactivation survey was not mentioned. It is sent when the plugin is deleted, and if it is submitted without ticking "Anonymous feedback" on a site that never opted in, that counts as opting in. All four cases are now spelled out.
 
 = 0.6.5 =
 
@@ -235,7 +263,7 @@ Every string the plugin ships, including those in the bundled User Tags library,
 
 **Licensing, through Freemius.** The SDK ships in `libraries/freemius/` and handles the paid plan, licence activation and automatic updates.
 
-It is the only part of the plugin that contacts anything outside your site, and it asks first. The opt-in on activation is skippable, and skipping costs you nothing: the auditor and user tags neither know nor care. What is shared if you do opt in, and what stays optional, is set out under *Licensing, and the one external service* above.
+It is the only part of the plugin that contacts anything outside your site, and it asks first. The opt-in on activation is skippable, and skipping costs you nothing: the auditor and user tags neither know nor care. What is shared if you do opt in, and what stays optional, is set out under *Licensing* above.
 
 The SDK is required explicitly rather than autoloaded, for the same reason as the User Tags library: Freemius also arbitrates between every copy installed on a site and boots the newest, and an autoloader binding a class to a copy other than the one that won is the failure that pattern exists to avoid.
 

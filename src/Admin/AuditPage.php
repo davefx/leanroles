@@ -14,6 +14,9 @@ defined( 'ABSPATH' ) || exit;
 
 final class AuditPage {
 
+	/** The query value of the "More plugins" tab. */
+	public const TAB_MORE = 'more-plugins';
+
 	/**
 	 * Render.
 	 */
@@ -25,6 +28,20 @@ final class AuditPage {
 		// Read-only screen: the inputs come in on the query string, and nothing
 		// they influence is written anywhere.
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended
+		$tab = isset( $_GET['tab'] ) && self::TAB_MORE === $_GET['tab'] ? self::TAB_MORE : '';
+
+		// Before the audit runs, not after: the other tab has no use for it, and
+		// the audit reads the role option and times a benchmark.
+		if ( self::TAB_MORE === $tab ) {
+			echo '<div class="wrap leanroles-audit">';
+			echo '<h1>' . esc_html__( 'Role audit', 'leanroles' ) . '</h1>';
+			self::render_tabs( $tab );
+			dfx_plugin_showcase_render( array( 'exclude' => 'leanroles' ) );
+			echo '</div>';
+
+			return;
+		}
+
 		$rps       = isset( $_GET['rps'] ) ? max( 0, (int) $_GET['rps'] ) : 20;
 		$ram       = isset( $_GET['ram'] ) ? max( 1, (int) $_GET['ram'] ) : 4096;
 		$worker    = isset( $_GET['worker'] ) ? max( 1, (int) $_GET['worker'] ) : 60;
@@ -42,6 +59,7 @@ final class AuditPage {
 
 		echo '<div class="wrap leanroles-audit">';
 		echo '<h1>' . esc_html__( 'Role audit', 'leanroles' ) . '</h1>';
+		self::render_tabs( $tab );
 
 		echo '<p class="leanroles-lede">';
 		esc_html_e( 'Everything on this page is read. Nothing here writes to your role configuration, your users, or anything else — you can leave this installed on a client site without asking anyone first.', 'leanroles' );
@@ -55,6 +73,35 @@ final class AuditPage {
 		self::render_roles( $report );
 
 		echo '</div>';
+	}
+
+	/**
+	 * The audit and "More plugins" tabs.
+	 *
+	 * The second tab's label is read from the catalog cache only, so printing
+	 * it here costs no request.
+	 *
+	 * @param string $current The open tab: '' for the audit.
+	 */
+	private static function render_tabs( string $current ): void {
+		$tabs = array(
+			''             => __( 'Audit', 'leanroles' ),
+			self::TAB_MORE => dfx_plugin_showcase_label(),
+		);
+
+		echo '<nav class="nav-tab-wrapper">';
+
+		foreach ( $tabs as $tab => $label ) {
+			printf(
+				'<a href="%1$s" class="nav-tab%2$s"%3$s>%4$s</a>',
+				esc_url( Menu::url( Menu::AUDIT_SLUG, '' === $tab ? array() : array( 'tab' => $tab ) ) ),
+				$current === $tab ? ' nav-tab-active' : '',
+				$current === $tab ? ' aria-current="page"' : '',
+				esc_html( $label )
+			);
+		}
+
+		echo '</nav>';
 	}
 
 	/**
